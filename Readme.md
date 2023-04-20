@@ -8,7 +8,7 @@ Set of APIs for working with windows OS primitives
 
 Windows Registry including Group Policy and ADMX Generation
 
-[More information](Esatto.Win32.Registry/Readme)
+[More information](Esatto.Win32.Registry/Readme.md)
 
 ## Esatto.Win32.Com
 
@@ -19,7 +19,7 @@ Windows Registry including Group Policy and ADMX Generation
 * Running object table (ROT)
 * `IStream` wrappers
 
-[More information](Esatto.Win32.Com/Readme)
+[More information](Esatto.Win32.Com/Readme.md)
 
 ## Esatto.Win32.Common
 
@@ -39,7 +39,7 @@ Windows Registry including Group Policy and ADMX Generation
   * Mapping a network drive with or without a drive letter
   * Setting a file's Mark-of-the-web
 
-[More information](Esatto.Win32.Common/Readme)
+[More information](Esatto.Win32.Common/Readme.md)
 
 ## Esatto.Win32.CommonControls
 
@@ -58,7 +58,7 @@ Windows Registry including Group Policy and ADMX Generation
 * Printers
   * Saving and restoring printer settings
 
-[More information](Esatto.Win32.CommonControls/Readme)
+[More information](Esatto.Win32.CommonControls/Readme.md)
 
 # Other options
 
