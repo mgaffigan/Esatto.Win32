@@ -10,9 +10,6 @@
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>
-    <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

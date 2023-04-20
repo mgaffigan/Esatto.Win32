@@ -16,8 +16,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Build Esatto.Win32.Com
       run: dotnet pack Esatto.Win32.Com -c Release -p:Version=${{github.ref_name}}
     - name: NugetPush Esatto.Win32.Com
