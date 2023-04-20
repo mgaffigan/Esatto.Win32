@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Esatto.Win32.AdmxExporter": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:63833;http://localhost:63834"
+    }
+  }
+}

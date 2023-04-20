@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net48;net7.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>annotations</Nullable>
+    <Title>Esatto Win32 Registry</Title>
+    <Description>Wrappers allowing easy reading and writing to the registry class wrappers or Microsoft.Extensions.Configuration</Description>
+    <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="Readme_GPMC.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <Import Project="..\assets\EsattoCSCommon.targets" />
+</Project>
