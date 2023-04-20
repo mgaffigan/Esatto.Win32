@@ -160,4 +160,4 @@ Example:
 
 Example appearance in Group Policy Management Center (GPMC):
 
-![Group Policy Management Center showing the loaded ADMX file](Readme_GPMC.png)
+![Group Policy Management Center showing the loaded ADMX file](https://github.com/mgaffigan/Esatto.Win32/raw/master/Esatto.Win32.Registry/Readme_GPMC.png)

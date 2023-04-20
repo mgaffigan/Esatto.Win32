@@ -1,38 +1,64 @@
 # Esatto Win32
 
-Set of APIs for working with
+Set of APIs for working with windows OS primitives
 
-* Windows Registry including Group Policy and ADMX Generation
-* COM 
-  * Clients to Out-of-process servers
-  * Implementation of Out-of-process servers
-  * Running object table (ROT)
-  * `IStream` wrappers
+## Esatto.Win32.Registry
+
+[![Nuget](https://img.shields.io/nuget/v/Esatto.Win32.Registry)](https://www.nuget.org/packages/Esatto.Win32.Registry)
+
+Windows Registry including Group Policy and ADMX Generation
+
+[More information](Esatto.Win32.Registry/Readme)
+
+## Esatto.Win32.Com
+
+[![Nuget](https://img.shields.io/nuget/v/Esatto.Win32.Com)](https://www.nuget.org/packages/Esatto.Win32.Com)
+
+* Clients to Out-of-process servers
+* Implementation of Out-of-process servers
+* Running object table (ROT)
+* `IStream` wrappers
+
+[More information](Esatto.Win32.Com/Readme)
+
+## Esatto.Win32.Common
+
+[![Nuget](https://img.shields.io/nuget/v/Esatto.Win32.Common)](https://www.nuget.org/packages/Esatto.Win32.Common)
+
 * Process and Job objects
   * Create Job
   * Create process in other session
   * Privilege manipulation
-* Reading Monitor layouts
-* Native windows
-  * `HWND`'s
-  * SysMenu
-  * `SetWinEventHook` as `IObservable`
-  * Window locations as `IObservable`
-* Windows Shell
-  * `IPreviewHandler`'s
-  * File type associations
 * Printers
-  * Saving and restoring printer settings
   * Creating RAW Print Jobs
   * Installing and administering Port Monitors
   * Installing Printer Drivers
 * Installing and administering NT Services
 * Windows Security access
   * Computer and user names (FQDN, UPN, etc...) without LDAP
-  * Standard windows Username/Password prompt
-  * Standard windows Certificate prompt
   * Mapping a network drive with or without a drive letter
   * Setting a file's Mark-of-the-web
+
+[More information](Esatto.Win32.Common/Readme)
+
+## Esatto.Win32.CommonControls
+
+[![Nuget](https://img.shields.io/nuget/v/Esatto.Win32.CommonControls)](https://www.nuget.org/packages/Esatto.Win32.CommonControls)
+
+* Reading Monitor layouts
+* Native windows
+  * `HWND`'s
+  * SysMenu
+  * `SetWinEventHook` as `IObservable`
+  * Window locations as `IObservable`
+  * Standard windows Username/Password prompt
+* Windows Shell
+  * `IPreviewHandler`'s
+  * File type associations
+* Printers
+  * Saving and restoring printer settings
+
+[More information](Esatto.Win32.CommonControls/Readme)
 
 # Other options
 
