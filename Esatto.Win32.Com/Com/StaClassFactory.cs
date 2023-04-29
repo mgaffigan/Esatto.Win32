@@ -10,7 +10,7 @@ namespace Esatto.Win32.Com
     using static ComInterop;
     using static NativeMethods;
 
-    internal sealed class StaClassFactory : IClassFactory
+    internal sealed class StaClassFactory : StandardOleMarshalObject, IClassFactory
     {
         private readonly Func<object> Constructor;
         private readonly Type ClassType;

@@ -62,6 +62,18 @@ namespace Esatto.Win32.Com
             return CreateLocalServer(clsid);
         }
 
+        public static TInterface CreateLocalServer<TInterface>(string progid)
+        {
+            if (string.IsNullOrEmpty(progid))
+            {
+                throw new ArgumentException("Contract assertion not met: !string.IsNullOrEmpty(progid)", nameof(progid));
+            }
+
+            Guid clsid;
+            CLSIDFromProgID(progid, out clsid);
+            return CreateLocalServer<TInterface>(clsid);
+        }
+
         public static void CoAllowSetForegroundWindow(object obj) => NativeMethods.CoAllowSetForegroundWindow(obj, IntPtr.Zero);
         public static void AllowSetForegroundWindow(int pid) => NativeMethods.AllowSetForegroundWindow(pid);
         public static void AllowSetForegroundWindow() => NativeMethods.AllowSetForegroundWindow(NativeMethods.ASFW_ANY);
