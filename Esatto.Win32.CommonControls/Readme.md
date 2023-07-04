@@ -89,3 +89,18 @@ Add `ShellPreviewControl` to a Windows Form or WPF Window.  Set `DisplayedPath` 
     var window = Win32Window.Find(process, w => w.CachedClass == "Example"" && window.GetIsShown());
     var child = window.FindChild(ww => ww.CachedClass == FrameworkConstants.MdiClientClass);
     child.Show();
+
+## Persist window location to registry
+
+Create a window which when it opens will restore to the same location.  Avoids restore if the window
+get's resized to be very small, or if monitor changes put it mostly outside of the desktop viewport.
+Restores maximized if the window is closed when maximized.  Persists the restored size, and never
+restores minimized.
+
+    <Window x:Class="RememberWindowLocation.MainWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:win32="clr-namespace:Esatto.Win32.Wpf;assembly=Esatto.Win32.CommonControls"
+            Title="MainWindow" Height="450" Width="800"
+            win32:WindowPlacement.SavePath="Software\DemoApp\WindowPos">
+    </Window>
