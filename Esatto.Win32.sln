@@ -13,13 +13,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.AdmxExporter",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C591445A-B156-49FD-A0FC-A5B3CF37B04D}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Assets\EsattoCSCommon.targets = Assets\EsattoCSCommon.targets
 		LICENSE.txt = LICENSE.txt
 		Readme.md = Readme.md
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esatto.Win32.Com", "Esatto.Win32.Com\Esatto.Win32.Com.csproj", "{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.Com", "Esatto.Win32.Com\Esatto.Win32.Com.csproj", "{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esatto.Utilities", "Esatto.Utilities\Esatto.Utilities.csproj", "{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +50,10 @@ Global
 		{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -60,6 +60,14 @@ Windows Registry including Group Policy and ADMX Generation
 
 [More information](Esatto.Win32.CommonControls/Readme.md)
 
+## Esatto.Utilities
+
+[![Nuget](https://img.shields.io/nuget/v/Esatto.Utilities)](https://www.nuget.org/packages/Esatto.Utilities)
+
+* TBD
+
+[More information](Esatto.Win32.CommonControls/Readme.md)
+
 # Other options
 
 Many of the wrappers in this solution have been obsoleted by the 

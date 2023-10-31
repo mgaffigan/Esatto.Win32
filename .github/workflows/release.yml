@@ -32,3 +32,7 @@ jobs:
       run: dotnet pack Esatto.Win32.Registry -c Release -p:Version=${{github.ref_name}}
     - name: NugetPush Esatto.Win32.Registry
       run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Win32.Registry/bin/Release/Esatto.Win32.Registry.${{github.ref_name}}.nupkg
+    - name: Build Esatto.Utilities
+      run: dotnet pack Esatto.Utilities -c Release -p:Version=${{github.ref_name}}
+    - name: NugetPush Esatto.Utilities
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Utilities/bin/Release/Esatto.Utilities.${{github.ref_name}}.nupkg
