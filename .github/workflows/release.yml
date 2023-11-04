@@ -36,3 +36,7 @@ jobs:
       run: dotnet pack Esatto.Utilities -c Release -p:Version=${{github.ref_name}}
     - name: NugetPush Esatto.Utilities
       run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Utilities/bin/Release/Esatto.Utilities.${{github.ref_name}}.nupkg
+    - name: Build Esatto.Win32.RdpDvc.Common
+      run: dotnet pack Esatto.Win32.RdpDvc.Common -c Release -p:Version=${{github.ref_name}}
+    - name: NugetPush Esatto.Win32.RdpDvc.Common
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Win32.RdpDvc.Common/bin/Release/Esatto.Win32.RdpDvc.Common.${{github.ref_name}}.nupkg

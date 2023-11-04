@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net48;net7.0-windows</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable Condition="'$(TargetFramework)' != 'net48'">enable</Nullable>
+    <Nullable Condition="'$(TargetFramework)' == 'net48'">annotations</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <RootNamespace>Esatto.Win32.RdpDvc</RootNamespace>
+    <Title>Esatto Win32 RDP DVC Core API</Title>
+    <Description>Core API's for working with Remote Desktop Protocol Dynamic Virtual Channels</Description>
+    <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
+    <WarningsAsErrors>Nullable;CA1806;CA1307;CA1309;CA1310</WarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Not supported on net48 -->
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Esatto.Win32.Com\Esatto.Win32.Com.csproj" />
+  </ItemGroup>
+  <Import Project="..\assets\EsattoCSCommon.targets" />
+</Project>

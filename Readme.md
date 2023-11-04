@@ -66,7 +66,18 @@ Windows Registry including Group Policy and ADMX Generation
 
 * TBD
 
-[More information](Esatto.Win32.CommonControls/Readme.md)
+[More information](Esatto.Utilities/Readme.md)
+
+## Esatto.Win32.RdpDvc.Common
+
+[![Nuget](https://img.shields.io/nuget/v/Esatto.Win32.RdpDvc.Common)](https://www.nuget.org/packages/Esatto.Win32.RdpDvc.Common)
+
+Core API's for working with Remote Desktop Protocol Dynamic Virtual Channels.  See 
+[Esatto.Rdp.DvcApi](https://github.com/mgaffigan/Esatto.Rdp.DvcApi) for a WCF-over-RDP
+built on this library.  See [Esatto.AppCoordination](https://github.com/mgaffigan/Esatto.AppCoordination) 
+for a distributed application coordination framework built on top of this.
+
+[More information](Esatto.Win32.RdpDvc.Common/Readme.md)
 
 # Other options
 

@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.Com", "Esatto.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esatto.Utilities", "Esatto.Utilities\Esatto.Utilities.csproj", "{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.RdpDvc.Common", "Esatto.Win32.RdpDvc.Common\Esatto.Win32.RdpDvc.Common.csproj", "{873282B3-11C4-4420-9D77-224AA1230D69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{873282B3-11C4-4420-9D77-224AA1230D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{873282B3-11C4-4420-9D77-224AA1230D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{873282B3-11C4-4420-9D77-224AA1230D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{873282B3-11C4-4420-9D77-224AA1230D69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
