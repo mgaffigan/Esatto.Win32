@@ -14,6 +14,7 @@
     <WarningsAsErrors>Nullable;CA1806;CA1307;CA1309;CA1310</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseWindowsForms>true</UseWindowsForms>
+    <Version>3.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <!-- Not supported on net48 -->

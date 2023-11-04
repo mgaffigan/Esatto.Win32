@@ -11,6 +11,7 @@
     <Description>Miscellaneous utility classes</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
     <WarningsAsErrors>Nullable;CA1806;CA1307;CA1309;CA1310</WarningsAsErrors>
+    <Version>3.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <!-- Not supported on net48 -->

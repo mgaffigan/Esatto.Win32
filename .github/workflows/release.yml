@@ -17,26 +17,26 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Build Esatto.Win32.Com
-      run: dotnet pack Esatto.Win32.Com -c Release -p:Version=${{github.ref_name}}
+      run: dotnet pack Esatto.Win32.Com -c Release
     - name: NugetPush Esatto.Win32.Com
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Win32.Com/bin/Release/Esatto.Win32.Com.${{github.ref_name}}.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate Esatto.Win32.Com/bin/Release/Esatto.Win32.Com.${{github.ref_name}}.nupkg
     - name: Build Esatto.Win32.Common
-      run: dotnet pack Esatto.Win32.Common -c Release -p:Version=${{github.ref_name}}
+      run: dotnet pack Esatto.Win32.Common -c Release
     - name: NugetPush Esatto.Win32.Common
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Win32.Common/bin/Release/Esatto.Win32.Common.${{github.ref_name}}.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate Esatto.Win32.Common/bin/Release/Esatto.Win32.Common.${{github.ref_name}}.nupkg
     - name: Build Esatto.Win32.CommonControls
-      run: dotnet pack Esatto.Win32.CommonControls -c Release -p:Version=${{github.ref_name}}
+      run: dotnet pack Esatto.Win32.CommonControls -c Release
     - name: NugetPush Esatto.Win32.CommonControls
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Win32.CommonControls/bin/Release/Esatto.Win32.CommonControls.${{github.ref_name}}.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate Esatto.Win32.CommonControls/bin/Release/Esatto.Win32.CommonControls.${{github.ref_name}}.nupkg
     - name: Build Esatto.Win32.Registry
-      run: dotnet pack Esatto.Win32.Registry -c Release -p:Version=${{github.ref_name}}
+      run: dotnet pack Esatto.Win32.Registry -c Release
     - name: NugetPush Esatto.Win32.Registry
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Win32.Registry/bin/Release/Esatto.Win32.Registry.${{github.ref_name}}.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate Esatto.Win32.Registry/bin/Release/Esatto.Win32.Registry.${{github.ref_name}}.nupkg
     - name: Build Esatto.Utilities
-      run: dotnet pack Esatto.Utilities -c Release -p:Version=${{github.ref_name}}
+      run: dotnet pack Esatto.Utilities -c Release
     - name: NugetPush Esatto.Utilities
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Utilities/bin/Release/Esatto.Utilities.${{github.ref_name}}.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate Esatto.Utilities/bin/Release/Esatto.Utilities.${{github.ref_name}}.nupkg
     - name: Build Esatto.Win32.RdpDvc.Common
-      run: dotnet pack Esatto.Win32.RdpDvc.Common -c Release -p:Version=${{github.ref_name}}
+      run: dotnet pack Esatto.Win32.RdpDvc.Common -c Release
     - name: NugetPush Esatto.Win32.RdpDvc.Common
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Esatto.Win32.RdpDvc.Common/bin/Release/Esatto.Win32.RdpDvc.Common.${{github.ref_name}}.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate Esatto.Win32.RdpDvc.Common/bin/Release/Esatto.Win32.RdpDvc.Common.${{github.ref_name}}.nupkg
