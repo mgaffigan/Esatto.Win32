@@ -112,5 +112,7 @@ namespace Esatto.Win32.Com
                 }
             }
         }
+
+        public static bool IsEmbedding(string[] args) => args.Any(a => string.Equals(a, "-embedding", StringComparison.OrdinalIgnoreCase));
     }
 }
