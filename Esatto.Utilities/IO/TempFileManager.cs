@@ -9,6 +9,11 @@ namespace Esatto.Utilities
         public string BasePath { get; private set; }
         private const int MAX_PATH = 260;
 
+        public TempFileManager(ILogger<TempFileManager> logger)
+            : this((ILogger)logger)
+        {
+        }
+
         public TempFileManager(ILogger logger)
             : this(logger, Path.GetTempPath())
         {
