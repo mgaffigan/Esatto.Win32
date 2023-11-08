@@ -611,5 +611,31 @@ namespace Esatto.Win32.Windows
 
         [DllImport(User32)]
         public static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
+
+
+        [DllImport("SHELL32.dll", ExactSpelling = true, PreserveSig = false)]
+        public static extern void SHOpenWithDialog(IntPtr hwnd, in OPENASINFO poaInfo);
+
+        public struct OPENASINFO
+        {
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string pcszFile;
+            [MarshalAs(UnmanagedType.LPWStr)]
+#pragma warning disable CS0649 // Field 'NativeMethods.OPENASINFO.pcszClass' is never assigned to, and will always have its default value null
+            public string pcszClass;
+#pragma warning restore CS0649 // Field 'NativeMethods.OPENASINFO.pcszClass' is never assigned to, and will always have its default value null
+            public OPEN_AS_INFO_FLAGS oaifInFlags;
+        }
+
+        public enum OPEN_AS_INFO_FLAGS
+        {
+            ALLOW_REGISTRATION = 0x00000001,
+            REGISTER_EXT = 0x00000002,
+            EXEC = 0x00000004,
+            FORCE_REGISTRATION = 0x00000008,
+            HIDE_REGISTRATION = 0x00000020,
+            URL_PROTOCOL = 0x00000040,
+            FILE_IS_URI = 0x00000080,
+        }
     }
 }
