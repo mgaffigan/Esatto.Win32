@@ -4,12 +4,14 @@
     <TargetFrameworks>net48;net7.0-windows</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>$(DefineConstants);ESATTO_WIN32</DefineConstants>
+    <LangVersion>latest</LangVersion>
+    <Nullable>annotations</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <Title>Esatto Win32 Common Controls</Title>
     <Description>Tools for manipulating HWNDs, watching other windows, and utilizing shell registrations</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.3</Version>
+    <Version>3.0.4</Version>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +32,18 @@ namespace Esatto.Win32.Windows
             var item = (IShellItem)SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID);
             var assocenum = (IEnumAssocHandlers)item.BindToHandler(null, BHID_EnumAssocHandlers, typeof(IEnumAssocHandlers).GUID);
             var dao = (IDataObject)item.BindToHandler(null, BHID_DataObject, typeof(IDataObject).GUID);
+            return GetAssocs(assocenum, dao);
+        }
+
+        public static IReadOnlyList<AssociatedHandler> ForUrl(Uri url)
+        {
+            var assocenum = SHAssocEnumHandlersForProtocolByApplication(url.Scheme, typeof(IEnumAssocHandlers).GUID);
+            var dao = GetUIObjectOfFile<IDataObject>(url.ToString());
+            return GetAssocs(assocenum, dao);
+        }
+
+        private static IReadOnlyList<AssociatedHandler> GetAssocs(IEnumAssocHandlers assocenum, IDataObject dao)
+        {
             var results = new List<AssociatedHandler>();
             IAssocHandler handler; int retrieved;
             while (true)

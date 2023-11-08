@@ -21,8 +21,53 @@ namespace Esatto.Win32.Windows
         [return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)]
         public static extern object SHCreateItemFromParsingName(
             [MarshalAs(UnmanagedType.LPWStr)] string path,
-            IBindCtx pBindCtx,
-            [MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+            IBindCtx? pBindCtx,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid
+        );
+
+        [DllImport("SHELL32.dll", ExactSpelling = true, PreserveSig = false)]
+        [return: MarshalAs(UnmanagedType.Interface)]
+        internal static extern void SHParseDisplayName(
+            [MarshalAs(UnmanagedType.LPWStr)] string pszName,
+            IntPtr pbc,
+            out IntPtr ppidl,
+            int sfgaoIn,
+            out int psfgaoOut
+        );
+
+        [DllImport(Shell32, ExactSpelling = true, PreserveSig = false)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        internal static extern unsafe void SHBindToParent(
+            IntPtr pidl,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv,
+            out IntPtr ppidlLast
+        );
+
+        [DllImport(Shell32, ExactSpelling = true, PreserveSig = false)]
+        [return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)]
+        internal static extern IEnumAssocHandlers SHAssocEnumHandlersForProtocolByApplication(
+            [MarshalAs(UnmanagedType.LPWStr)] string protocol,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid iid
+        );
+
+        // https://devblogs.microsoft.com/oldnewthing/20040920-00/?p=37823
+        public static T GetUIObjectOfFile<T>(string pszPath)
+        {
+            SHParseDisplayName(pszPath, IntPtr.Zero, out nint pidl, 0, out var _);
+            try
+            {
+                SHBindToParent(pidl, typeof(IShellFolder).GUID, out object oPsf, out var pidlChild);
+                var psf = (IShellFolder)oPsf;
+
+                psf.GetUIObjectOf(IntPtr.Zero, 1, ref pidlChild, typeof(T).GUID, 0, out object oPpv);
+                return (T)oPpv;
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(pidl);
+            }
+        }
 
         [Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         public interface IShellItem
@@ -30,7 +75,7 @@ namespace Esatto.Win32.Windows
             // here we only need this member
             [return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)]
             object BindToHandler(
-                IBindCtx pbc,
+                IBindCtx? pbc,
                 [MarshalAs(UnmanagedType.LPStruct)] Guid bhid,
                 [MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
@@ -42,6 +87,24 @@ namespace Esatto.Win32.Windows
             SFGAO GetAttributes(SFGAO sfgaoMask);
 
             int Compare(IShellItem psi, SICHINT hint);
+        }
+
+        [Guid("000214E6-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), ComImport]
+        public interface IShellFolder
+        {
+            void _VtblGap1_7();
+            unsafe void GetUIObjectOf(
+                IntPtr hwndOwner,
+                int cidl,
+                ref IntPtr apidl,
+                [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+                int rgfReserved,
+                [MarshalAs(UnmanagedType.IUnknown)] out object ppv
+            );
+
+            //[return: MarshalAs(UnmanagedType.LPWStr)]
+            //void GetDisplayNameOf(IntPtr pidl, uint uFlags, out Windows.Win32.Shell.STRREF strRef);
+            void _VtblGap2_2();
         }
 
         [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("973810ae-9599-4b88-9e4d-6ee98c9552da")]
