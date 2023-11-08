@@ -330,6 +330,33 @@ namespace Esatto.Win32.Registry
 
         #endregion
 
+        #region Guid
+
+        protected Guid GetGuid(string name, Guid defaultValue)
+        {
+            var value = GetValue(name, null);
+            if (value is string sValue && Guid.TryParse(sValue, out var guid))
+            {
+                return guid;
+            }
+            else if (value != null)
+            {
+                throw new ArgumentOutOfRangeException(string.Format(
+                    "Setting '{0}' is invalid ({1}), expecting Guid (REG_SZ)",
+                    name, value));
+            }
+            else return defaultValue;
+        }
+
+        protected void SetGuid(string name, Guid value)
+        {
+#pragma warning disable CA1416 // Validate platform compatibility
+            SetValue(name, value.ToString(), RegistryValueKind.String);
+#pragma warning restore CA1416 // Validate platform compatibility
+        }
+
+        #endregion
+
         #endregion
 
         #region Subkeys
