@@ -67,7 +67,11 @@ namespace Esatto.Win32.Registry
             this.path = path;
             SetValueOptions = options;
 
+#if NETFRAMEWORK
+            if (IgnoreRegistry)
+#else
             if (IgnoreRegistry || !RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#endif
             {
                 return;
             }
@@ -148,10 +152,12 @@ namespace Esatto.Win32.Registry
 
         public void Dispose()
         {
+#if !NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return;
             }
+#endif
 
             disposeRegKey(rkHklmPolicySettings);
             disposeRegKey(rkHklmSettings);
@@ -172,7 +178,7 @@ namespace Esatto.Win32.Registry
             key.Dispose();
         }
 
-        #endregion
+#endregion
 
         #region accessors
 
@@ -368,7 +374,9 @@ namespace Esatto.Win32.Registry
         protected HashSet<string> GetSubkeyNames()
         {
             var results = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+#if !NETFRAMEWORK
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#endif
             {
                 AddRangeToCollection(results, rkHkcuSettings?.GetSubKeyNames());
                 AddRangeToCollection(results, rkHklmSettings?.GetSubKeyNames());
@@ -389,7 +397,7 @@ namespace Esatto.Win32.Registry
             }
         }
 
-        #endregion
+#endregion
 
         #region values
 
@@ -411,7 +419,9 @@ namespace Esatto.Win32.Registry
 
         protected ValueSource GetValue(string name, object? defaultValue, out object? value)
         {
+#if !NETFRAMEWORK
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#endif
             {
                 if (tryGetValue(rkHkcuPolicySettings, name, out value))
                     return ValueSource.UserPolicy;
@@ -429,10 +439,12 @@ namespace Esatto.Win32.Registry
 
         protected void SetValue(string name, object? value, RegistryValueKind kind)
         {
+#if !NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return;
             }
+#endif
 
             if (SetValueOptions.HasFlag(Options.WriteToHkeyLocalMachine))
             {

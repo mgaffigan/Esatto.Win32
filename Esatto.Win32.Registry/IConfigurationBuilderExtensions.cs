@@ -27,7 +27,9 @@ namespace Esatto.Win32.Registry
         public static IConfigurationBuilder AddRegistry(this IConfigurationBuilder configurationBuilder, 
             RegistryHive hive, string path, RegistryView view = RegistryView.Registry64, bool optional = true)
         {
+#if !NETFRAMEWORK
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#endif
             {
                 using var root = RegistryKey.OpenBaseKey(hive, view);
                 var key = root.OpenSubKey(path);
