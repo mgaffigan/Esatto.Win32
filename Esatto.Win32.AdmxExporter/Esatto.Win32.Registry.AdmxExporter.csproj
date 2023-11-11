@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Esatto.Win32.Registry\ChildSettingOfAttribute.cs" Link="Borrows\ChildSettingOfAttribute.cs" />
+    <Compile Include="..\Esatto.Win32.Registry\RegistrySettingMetadataAttribute.cs" Link="Borrows\RegistrySettingMetadataAttribute.cs" />
+    <Compile Include="..\Esatto.Win32.Registry\RegistrySettingsAttribute.cs" Link="Borrows\RegistrySettingsAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Esatto.Win32.AdmxExporter.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mono.Cecil" Version="0.11.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\adml.xslt" />
+    <EmbeddedResource Include="Assets\admx.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Borrows\" />
+  </ItemGroup>
+</Project>

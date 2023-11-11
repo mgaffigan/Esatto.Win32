@@ -305,6 +305,8 @@ namespace Esatto.Win32.Registry
 
         #region TimeSpan
 
+        protected TimeSpan GetTimeSpan(string name, int defaultValueMS)
+            => GetTimeSpan(name, TimeSpan.FromMilliseconds(defaultValueMS));
         protected TimeSpan GetTimeSpan(string name, TimeSpan defaultValue)
         {
             var value = GetValue(name, null);
@@ -332,6 +334,8 @@ namespace Esatto.Win32.Registry
 
         #region Guid
 
+        protected Guid GetGuid(string name, string? defaultValue)
+            => GetGuid(name, string.IsNullOrWhiteSpace(defaultValue) ? default : Guid.Parse(defaultValue));
         protected Guid GetGuid(string name, Guid defaultValue)
         {
             var value = GetValue(name, null);

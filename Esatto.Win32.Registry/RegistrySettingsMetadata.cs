@@ -149,30 +149,6 @@ namespace Esatto.Win32.Registry
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    public class ChildSettingOfAttribute : Attribute
-    {
-        public ChildSettingOfAttribute(string parentSettingName)
-        {
-            ParentName = parentSettingName ?? throw new ArgumentNullException(nameof(parentSettingName));
-        }
-
-        public string ParentName { get; }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    public sealed class RegistrySettingMetadataAttribute : Attribute
-    {
-        public RegistrySettingMetadataAttribute(string name, Type type)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Type = type ?? throw new ArgumentNullException(nameof(type));
-        }
-
-        public string Name { get; }
-        public Type Type { get; }
-    }
-
     public sealed class RegistrySettingMetadata
     {
         public string Name { get; }
@@ -187,8 +163,7 @@ namespace Esatto.Win32.Registry
         {
             var overrideMetadata = p.GetCustomAttribute<RegistrySettingMetadataAttribute>();
             Name = overrideMetadata?.Name ?? p.Name;
-            PropertyType = overrideMetadata?.Type ?? p.PropertyType;
-            ValueKind = RegistryKindForType(PropertyType);
+            ValueKind = overrideMetadata?.Type ?? RegistryKindForType(p.PropertyType);
 
             DefaultValue = p.GetValue(example, null);
 
@@ -205,6 +180,7 @@ namespace Esatto.Win32.Registry
                 return RegistryValueKind.String;
             }
             else if (propertyType == typeof(int)
+                || propertyType == typeof(TimeSpan)
                 || propertyType == typeof(bool))
             {
                 return RegistryValueKind.DWord;

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.CommonControls
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.Common", "Esatto.Win32.Common\Esatto.Win32.Common.csproj", "{4C1BD63A-4B34-456B-9825-5261914FFD3D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.AdmxExporter", "Esatto.Win32.AdmxExporter\Esatto.Win32.AdmxExporter.csproj", "{85120A4F-54BF-441C-A1CC-39CAFFC66C1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.Registry.AdmxExporter", "Esatto.Win32.AdmxExporter\Esatto.Win32.Registry.AdmxExporter.csproj", "{85120A4F-54BF-441C-A1CC-39CAFFC66C1D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C591445A-B156-49FD-A0FC-A5B3CF37B04D}"
 	ProjectSection(SolutionItems) = preProject
