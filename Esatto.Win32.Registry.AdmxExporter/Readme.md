@@ -1,0 +1,1 @@
+﻿# Esatto.Win32.Registry ADMX Exporter

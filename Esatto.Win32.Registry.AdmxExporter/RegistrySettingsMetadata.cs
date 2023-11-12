@@ -7,6 +7,7 @@ using Mono.Cecil;
 using Mono.Cecil.Rocks;
 using Esatto.Win32.Registry;
 using Mono.Cecil.Cil;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Esatto.Win32.Registry.AdmxExporter
 {
@@ -17,7 +18,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
 
     public sealed class RegistrySettingsMetadata
     {
-
+        public bool IsParameterized { get; }
         public TypeDefinition SettingsType { get; }
         public string SoftwarePath { get; }
         public string PolicyPath { get; }
@@ -32,7 +33,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
                 throw new ArgumentNullException(nameof(tRegistrySettings));
             }
 
-            var ctorType = IsParameterized(tRegistrySettings);
+            IsParameterized = tRegistrySettings.CustomAttributes.GetOrDefault<RegistrySettingsAttribute>()?.IsParameterized ?? false;
             SettingsType = tRegistrySettings;
             DisplayName = tRegistrySettings.CustomAttributes.GetOrDefault<DisplayNameAttribute>()?.DisplayName ?? tRegistrySettings.Name;
             Description = tRegistrySettings.CustomAttributes.GetOrDefault<DescriptionAttribute>()?.Description;
@@ -40,7 +41,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
             var relPath = GetRelPath(tRegistrySettings);
             SoftwarePath = $@"SOFTWARE\{relPath}";
             PolicyPath = $@"SOFTWARE\Policies\{relPath}";
-            Category = tRegistrySettings.CustomAttributes.GetOrDefault<CategoryAttribute>()?.Category ?? relPath;
+            Category = tRegistrySettings.CustomAttributes.GetOrDefault<CategoryAttribute>()?.Category ?? GetDefaultCategory(relPath);
 
             var settings = new List<RegistrySettingMetadata>();
             foreach (var prop in tRegistrySettings.Properties)
@@ -51,6 +52,16 @@ namespace Esatto.Win32.Registry.AdmxExporter
                 }
             }
             Settings = settings;
+        }
+
+        private static string GetDefaultCategory(string relPath)
+        {
+            const string prefix = "SOFTWARE\\";
+            if (relPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return relPath.Substring(prefix.Length);
+            }
+            return relPath;
         }
 
         private static string GetRelPath(TypeDefinition tRegistrySettings)
@@ -79,7 +90,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
             var call = inst.SingleOrDefault(i => i.OpCode == OpCodes.Call && i.Operand is MethodReference mr
                 && mr.Name == ".ctor" && mr.DeclaringType == tRegistrySettings.BaseType)
                 ?? throw new InvalidOperationException($"No base(\"path\") call found in '{tRegistrySettings.FullName}..ctor()'.  {useAttrInstruction}");
-            var ldstr = inst.Single(i => i.OpCode == OpCodes.Ldstr && i.Next == call)
+            var ldstr = inst.SingleOrDefault(i => i.OpCode == OpCodes.Ldstr && i.Next == call)
                 ?? throw new InvalidOperationException($"No ldstr for base(\"path\") call found in '{tRegistrySettings.FullName}..ctor()'.  {useAttrInstruction}");
             return ((string?)ldstr.Operand)
                 ?? throw new InvalidOperationException($"Path cannot be null in '{tRegistrySettings.FullName}..ctor()'.  {useAttrInstruction}");
@@ -114,19 +125,8 @@ namespace Esatto.Win32.Registry.AdmxExporter
             return type.IsPublic && !type.IsAbstract
                 && (
                     type.CustomAttributes.Any(a => a.AttributeType.FullName == typeof(RegistrySettingsAttribute).FullName)
-                    || type.BaseType.Name == TypeConstants.RegistrySettingsTypeName
+                    || type.BaseType.FullName == TypeConstants.RegistrySettingsTypeName
                 );
-        }
-
-        public static bool IsParameterized(TypeDefinition tRegistrySettings)
-        {
-            if (!IsRegistrySettingsType(tRegistrySettings))
-            {
-                throw new ArgumentOutOfRangeException(nameof(tRegistrySettings), "Type does not inherit from RegistrySettings or have RegistrySettingsAttribute");
-            }
-
-            return tRegistrySettings.CustomAttributes.GetOrDefault<RegistrySettingsAttribute>()
-                ?.IsParameterized ?? false;
         }
 
         public IReadOnlyList<RegistrySettingMetadata> Settings { get; }
@@ -138,7 +138,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
         public string DisplayName { get; }
         public string? Description { get; }
         public string? ParentSettingName { get; }
-        public string PropertyType { get; }
+        public TypeReference PropertyType { get; }
         public RegistryValueKind ValueKind { get; }
         public string? DefaultValue { get; }
 
@@ -146,7 +146,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
         {
             Name = rsm.Name;
             ValueKind = rsm.Type;
-            PropertyType = p.PropertyType.FullName;
+            PropertyType = p.PropertyType;
             DefaultValue = rsm.DefaultValue;
 
             DisplayName = p.CustomAttributes.GetOrDefault<DisplayNameAttribute>()?.DisplayName ?? Name;
@@ -182,7 +182,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
 
         private static RegistrySettingMetadataAttribute GetRsmFromMsilOrDefault(PropertyDefinition prop)
         {
-            var type = GetType(prop);
+            var type = GetType(prop.PropertyType);
             var defaultRsm = new RegistrySettingMetadataAttribute(prop.Name, type);
             var body = prop.GetMethod.Body;
             // Converts things like ldc.i4.0 into ldc.i4 0
@@ -223,7 +223,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
             if (!GetValueFromLoad(ldDefault, prop.PropertyType, out var defaultValue)) return defaultRsm;
 
             var ldName = ldDefault.Previous;
-            if (!GetStringFromLoad(ldDefault, out var name)) return defaultRsm;
+            if (!GetStringFromLoad(ldName, out var name)) return defaultRsm;
             if (name is null) return defaultRsm;
 
             return new RegistrySettingMetadataAttribute(name, type) { DefaultValue = defaultValue?.ToString() };
@@ -284,7 +284,8 @@ namespace Esatto.Win32.Registry.AdmxExporter
             }
         }
 
-        private static RegistryValueKind GetType(PropertyDefinition propertyType)
+#pragma warning disable CA1416 // Validate platform compatibility
+        private static RegistryValueKind GetType(TypeReference propertyType)
         {
             if (propertyType.FullName == typeof(string).FullName
                 || propertyType.FullName == typeof(Guid).FullName)
@@ -308,5 +309,6 @@ namespace Esatto.Win32.Registry.AdmxExporter
                 return RegistryValueKind.String;
             }
         }
+#pragma warning restore CA1416 // Validate platform compatibility
     }
 }

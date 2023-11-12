@@ -4,7 +4,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
 {
     internal sealed class CategoryUuidComparer : IEqualityComparer<RegistryCategoryDto>
     {
-        public bool Equals(RegistryCategoryDto x, RegistryCategoryDto y)
+        public bool Equals(RegistryCategoryDto? x, RegistryCategoryDto? y)
         {
             return x?.Uuid == y?.Uuid;
         }

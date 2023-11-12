@@ -19,7 +19,7 @@ namespace Esatto.Win32.Registry.AdmxExporter
             this.Description = t.Description;
             this.Category = RegistryCategoryDto.ForPath(t.Category).Last();
 
-            this.Settings = t.Settings.Select(s => new RegistrySettingValue(SoftwarePath, s)).ToList();
+            this.Settings = t.Settings.Select(s => new RegistrySettingValueDto(SoftwarePath, s)).ToList();
             foreach (var setting in Settings)
             {
                 if (setting.ParentSettingName != null)
@@ -47,6 +47,6 @@ namespace Esatto.Win32.Registry.AdmxExporter
         public RegistryCategoryDto Category { get; set; }
 
         [DataMember]
-        public List<RegistrySettingValue> Settings { get; set; }
+        public List<RegistrySettingValueDto> Settings { get; set; }
     }
 }

@@ -17,16 +17,29 @@ class Program
 {
     static void Main(string[] args)
     {
-        string assemblyPath = args[0];
-        string outPath = args[1];
+        string assemblyPath, xmlPath, admxPath, admlPath;
+        if (args.Length == 2)
+        {
+            assemblyPath = args[0];
+            string outPath = args[1];
+            string intermediatePath = args.Length > 2 ? args[2] : outPath;
 
-        var xmlPath = outPath + ".xml";
-        var admxPath = outPath + ".admx";
-        var admlPath = Path.GetFullPath(outPath + ".adml");
-        var admlDir = Path.Combine(Path.GetDirectoryName(admlPath), "en-US");
-        admlPath = Path.Combine(admlDir, Path.GetFileName(admlPath));
+            xmlPath = intermediatePath + ".xml";
+            admxPath = outPath + ".admx";
+            admlPath = Path.GetFullPath(outPath + ".adml");
+            var admlDir = Path.Combine(Path.GetDirectoryName(admlPath)!, "en-US");
+            admlPath = Path.Combine(admlDir, Path.GetFileName(admlPath));
 
-        Directory.CreateDirectory(admlDir);
+            Directory.CreateDirectory(admlDir);
+        }
+        else if (args.Length == 4)
+        {
+            assemblyPath = args[0];
+            xmlPath = args[1];
+            admxPath = args[2];
+            admlPath = args[3];
+        }
+        else throw new NotSupportedException("Unexpected argument count");
 
         try
         {
@@ -71,7 +84,8 @@ class Program
     {
         var xslt = new XslCompiledTransform();
         var assembly = typeof(Program).Assembly;
-        using (var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.Assets.{xslName}"))
+        using (var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.Assets.{xslName}")
+            ?? throw new InvalidOperationException("Could not load xslt stream"))
         {
             using (var xmlReader = XmlReader.Create(stream))
             {

@@ -1,0 +1,34 @@
+﻿<Project>
+  <PropertyGroup>
+    <AddAdmxToExportForTargetPath Condition="'$(AddAdmxToExportForTargetPath)' == ''">true</AddAdmxToExportForTargetPath>
+    <AdmxNeutralLang Condition="'$(AdmxNeutralLang)' == ''">$(NeutralLanguage)</AdmxNeutralLang>
+    <AdmxNeutralLang Condition="'$(AdmxNeutralLang)' == ''">en-US</AdmxNeutralLang>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(AdmxExporterPath)' == ''">
+    <AdmxExporterPath Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">"$(MSBuildThisFileDirectory)net462\Esatto.Win32.Registry.AdmxExporter.exe"</AdmxExporterPath>
+    <AdmxExporterPath Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">dotnet "$(MSBuildThisFileDirectory)net7.0/Esatto.Win32.Registry.AdmxExporter.dll"</AdmxExporterPath>
+  </PropertyGroup>
+  <Target Name="PrepareForAdmxBuild" Condition="'$(TargetFramework)' != ''">
+    <ItemGroup>
+      <AdmxToExport Include="$(TargetPath)" Condition="'$(AddAdmxToExportForTargetPath)' == 'true'">
+        <OutputXml>$(IntermediateOutputPath)$(TargetName)_regsettings.xml</OutputXml>
+        <OutputAdmx>$(TargetDir)PolicyDefinitions\$(TargetName).admx</OutputAdmx>
+        <OutputAdml>$(TargetDir)PolicyDefinitions\$(AdmxNeutralLang)\$(TargetName).adml</OutputAdml>
+      </AdmxToExport>
+      <AdmxOutputFiles Include="@(AdmxToExport -> '%(OutputXml)')" />
+      <AdmxOutputFiles Include="@(AdmxToExport -> '%(OutputAdmx)')" />
+      <AdmxOutputFiles Include="@(AdmxToExport -> '%(OutputAdml)')" />
+    </ItemGroup>
+    <MakeDir Directories="@(AdmxOutputFiles -> '%(RootDir)%(Directory)')" />
+  </Target>
+  <Target Name="ExportAdmxFiles" 
+          AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="PrepareForAdmxBuild"
+          Inputs="@(AdmxToExport)" Outputs="@(AdmxOutputFiles)"
+          Condition="'$(TargetFramework)' != ''">
+    <!-- AdmxExporterPath is pre-quoted -->
+    <Exec Command="$(AdmxExporterPath) &quot;%(AdmxToExport.Identity)&quot; &quot;%(AdmxToExport.OutputXml)&quot; &quot;%(AdmxToExport.OutputAdmx)&quot; &quot;%(AdmxToExport.OutputAdml)&quot;" />
+    <ItemGroup>
+      <FileWrites Include="@(AdmxOutputFiles)" />
+    </ItemGroup>
+  </Target>
+</Project>

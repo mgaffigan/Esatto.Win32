@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net7.0;net462</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Not supported on net48 -->
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Esatto.Win32.Registry.AdmxExporter" Version="3.0.5" />
+    <PackageReference Include="Esatto.Win32.Registry" Version="3.0.5" />
+  </ItemGroup>
+
+</Project>

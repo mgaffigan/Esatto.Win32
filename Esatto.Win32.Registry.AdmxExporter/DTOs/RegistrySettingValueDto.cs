@@ -5,15 +5,15 @@ using System.Runtime.Serialization;
 namespace Esatto.Win32.Registry.AdmxExporter
 {
     [DataContract(Namespace = "urn:esatto:registry", Name = "Setting")]
-    public sealed class RegistrySettingValue
+    public sealed class RegistrySettingValueDto
     {
-        public RegistrySettingValue(string parentPath, RegistrySettingMetadata s)
+        public RegistrySettingValueDto(string parentPath, RegistrySettingMetadata s)
         {
             this.Name = s.Name;
             this.DisplayName = s.DisplayName;
             this.Description = s.Description;
             this.ParentSettingName = s.ParentSettingName;
-            this.PropertyType = s.PropertyType;
+            this.PropertyType = s.PropertyType.Name;
             this.ValueKind = s.ValueKind.ToString();
             this.DefaultValue = s.DefaultValue;
             this.Uuid = Program.CalculateMD5Hash(parentPath + Name);

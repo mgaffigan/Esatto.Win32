@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.Common", "Esat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.Registry.AdmxExporter", "Esatto.Win32.Registry.AdmxExporter\Esatto.Win32.Registry.AdmxExporter.csproj", "{85120A4F-54BF-441C-A1CC-39CAFFC66C1D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C591445A-B156-49FD-A0FC-A5B3CF37B04D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_ Solution Items", "_ Solution Items", "{C591445A-B156-49FD-A0FC-A5B3CF37B04D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Assets\EsattoCSCommon.targets = Assets\EsattoCSCommon.targets
@@ -25,6 +25,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Utilities", "Esatto.Utilities\Esatto.Utilities.csproj", "{22EAE3D8-7A1E-470B-ACB7-7E06A090EDAC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esatto.Win32.RdpDvc.Common", "Esatto.Win32.RdpDvc.Common\Esatto.Win32.RdpDvc.Common.csproj", "{873282B3-11C4-4420-9D77-224AA1230D69}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Registry", "Registry", "{07BA62A2-02DC-4B6A-8E8A-1910AFC6B843}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esatto.Win32.Registry.SampleApp", "Esatto.Win32.Registry.SampleApp\Esatto.Win32.Registry.SampleApp.csproj", "{F17CE9C1-DA52-4709-BFCE-961F5BC1F365}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,7 +49,9 @@ Global
 		{4C1BD63A-4B34-456B-9825-5261914FFD3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C1BD63A-4B34-456B-9825-5261914FFD3D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85120A4F-54BF-441C-A1CC-39CAFFC66C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85120A4F-54BF-441C-A1CC-39CAFFC66C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85120A4F-54BF-441C-A1CC-39CAFFC66C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85120A4F-54BF-441C-A1CC-39CAFFC66C1D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4B706C2-F75F-4F9A-B9EA-A1FF085C484D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -58,9 +64,16 @@ Global
 		{873282B3-11C4-4420-9D77-224AA1230D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{873282B3-11C4-4420-9D77-224AA1230D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{873282B3-11C4-4420-9D77-224AA1230D69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F17CE9C1-DA52-4709-BFCE-961F5BC1F365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F17CE9C1-DA52-4709-BFCE-961F5BC1F365}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9744A982-E0F2-42B5-A790-90E51061B582} = {07BA62A2-02DC-4B6A-8E8A-1910AFC6B843}
+		{85120A4F-54BF-441C-A1CC-39CAFFC66C1D} = {07BA62A2-02DC-4B6A-8E8A-1910AFC6B843}
+		{F17CE9C1-DA52-4709-BFCE-961F5BC1F365} = {07BA62A2-02DC-4B6A-8E8A-1910AFC6B843}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8920B6E7-8346-42C1-8824-2B72D27131BC}

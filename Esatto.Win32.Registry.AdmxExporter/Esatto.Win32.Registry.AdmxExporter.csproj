@@ -1,29 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net7.0;net462</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
+    <Title>Esatto Win32 Registry</Title>
+    <Description>Wrappers allowing easy reading and writing to the registry class wrappers or Microsoft.Extensions.Configuration</Description>
+    <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
+    <Version>3.0.5</Version>
+  </PropertyGroup>
+  <Import Project="..\assets\EsattoCSCommon.targets" />
+  <PropertyGroup>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <NuspecFile>Esatto.Win32.Registry.AdmxExporter.nuspec</NuspecFile>
+    <IntermediatePackDir>$(MSBuildProjectDirectory)/bin/$(Configuration)/publish/</IntermediatePackDir>
+    <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
+    <NuspecProperties>authors=$(Authors);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>version=$(Version);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>title=$(Title);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>company=$(Company);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>copyright=$(Copyright);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>repositoryurl=$(RepositoryUrl);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>packageprojecturl=$(PackageProjectUrl);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>description=$(Description);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)));$(NuspecProperties)</NuspecProperties>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Borrows\" />
     <Compile Include="..\Esatto.Win32.Registry\ChildSettingOfAttribute.cs" Link="Borrows\ChildSettingOfAttribute.cs" />
     <Compile Include="..\Esatto.Win32.Registry\RegistrySettingMetadataAttribute.cs" Link="Borrows\RegistrySettingMetadataAttribute.cs" />
     <Compile Include="..\Esatto.Win32.Registry\RegistrySettingsAttribute.cs" Link="Borrows\RegistrySettingsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Esatto.Win32.AdmxExporter.targets">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="0.11.4" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0"
+                      Condition="'$(TargetFramework)' != 'net462'" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\adml.xslt" />
     <EmbeddedResource Include="Assets\admx.xslt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Borrows\" />
-  </ItemGroup>
+  
+  <Target Name="PublishAll" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <_TargetFramework Include="$(TargetFrameworks)" />
+    </ItemGroup>
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Publish" Properties="TargetFramework=%(_TargetFramework.Identity)" />
+  </Target>
 </Project>

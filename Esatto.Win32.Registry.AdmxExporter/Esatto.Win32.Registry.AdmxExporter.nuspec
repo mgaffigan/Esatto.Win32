@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Esatto.Win32.Registry.AdmxExporter</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$authors$</authors>
+    <description>$description$</description>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>.\Readme.md</readme>
+    <projectUrl>$packageprojecturl$</projectUrl>
+    <copyright>$copyright$</copyright>
+    <repository url="https://github.com/mgaffigan/Esatto.Win32" />
+  </metadata>
+  <files>
+    <file src="_._" target="lib/netstandard2.0/" />
+    <file src="_._" target="lib/net462/" />
+    <file src="Readme.md" target="Readme.md" />
+    <file src="Esatto.Win32.Registry.AdmxExporter.targets" target="build/netstandard2.0/Esatto.Win32.Registry.AdmxExporter.targets" />
+    <file src="Esatto.Win32.Registry.AdmxExporter.targets" target="build/net462/Esatto.Win32.Registry.AdmxExporter.targets" />
+    
+    <file src="ExportAdmx.targets" target="tools/" />
+    <file src="$publishdir$\net462\**\*" target="tools/net462/" />
+    <file src="$publishdir$\net7.0\**\*" target="tools/net7.0/" />
+  </files>
+</package>

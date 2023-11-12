@@ -6,7 +6,7 @@
     <Title>Esatto Win32 Registry</Title>
     <Description>Wrappers allowing easy reading and writing to the registry class wrappers or Microsoft.Extensions.Configuration</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.4</Version>
+    <Version>3.0.5</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0"
