@@ -10,7 +10,7 @@ non-windows platforms (Linux, MacOS) the call has no effect.
 
 Example registry settings:
 
-    Set-ItemProperty -Path HKLM:\Software\Company Name\Product -Name "Setting1" -Value "Example value" -Type String
+    Set-ItemProperty -Path "HKLM:\Software\Company Name\Product" -Name "Setting1" -Value "Example value" -Type String
 
 Example use:
 
@@ -43,6 +43,7 @@ Types supported:
 |`REG_DWORD` (`1` or `0`)|`bool` (`value != 0`)|`GetBool`|`SetBool`|
 |`REG_DWORD` (milliseconds)|`TimeSpan`|`GetTimeSpan`|`SetTimeSpan`|
 |`REG_SZ`|`string`|`GetString`|`SetString`|
+|`REG_SZ`|`Guid`|`GetGuid`|`SetGuid`|
 |`REG_SZ` (`enum.ToString()`)|`Enum` (`enum.Parse`)|`GetEnum<T>`|`SetEnum<T>`|
 |`REG_EXPAND_SZ`|`string[]`|`GetMultiString`|`SetMultiString`|
 
@@ -96,67 +97,18 @@ Subkeys may be exposed as nested `RegistrySettings` instances to permit lists / 
 
 ## ADMX Export for Wrapper Classes
 
-Annotate the wrapper class to auto-generate ADMX files for group policy.  Export the ADMX files with 
-Esatto.Win32.AdmxExporter.  The ADMX files can then be loaded into Active Directory by adding them to
-the [group policy central store](https://learn.microsoft.com/en-us/troubleshoot/windows-client/group-policy/create-and-manage-central-store#updating-the-administrative-templates-files), or by uploading them to Intune or another MDM.
+Wrapper classes may be exported to admx files for use in Group Policy.  Add the nuget package
+`Esatto.Win32.Registry.AdmxExporter` to the project containing the wrapper classes.
+Annotate the settings with `[DisplayName("Setting Name")]` and other attributes to make things pretty.  See 
+[AdmxExporter](https://github.com/mgaffigan/Esatto.Win32/tree/master/Esatto.Win32.Registry.AdmxExporter)
+for more details.
 
-* The path will be used to organize the settings ("In Touch Technologies > Example Product > Desktop Client" in the example).
-* `DisplayName` will set the name of the setting
-* `Description` will set the help text for the setting
-* `ChildSettingOf` will cause a setting to be added to the "Options" pane of another setting (`presentation` in the ADMX schema)
-
-Example:
-
-    public sealed class DesktopClientSettings : RegistrySettings
-    {
-        public DesktopClientSettings()
-            : base(@"In Touch Technologies\Esatto\Example App")
-        {
-        }
-
-        public static DesktopClientSettings Instance { get; } = new();
-
-        [DisplayName("Home URL")]
-        [Description("Initial URL to be used for login.  Typically set to the IdP login page for the RP")]
-        public string HomeUrl
-        {
-            get => GetString(nameof(HomeUrl), null);
-            set => SetString(nameof(HomeUrl), value);
-        }
-
-        [DisplayName("Block Close")]
-        [Description("If set, the user cannot use the \"X\" or Alt-F4 to close the window.  You can still close the window by clicking the application icon (Alt+Space) and selecting Quit.  Attempts to close the application will minimize the application instead.")]
-        public bool BlockClose
-        {
-            get => GetBool(nameof(BlockClose), true);
-            set => SetBool(nameof(BlockClose), value);
-        }
-
-        [DisplayName("Block Close When Minimized")]
-        [Description("If Block Close is not set, this setting has no effect.  When block close is set, the user can close the application by right clicking the taskbar and selecting \"Close\".  When this option is set, attempts to close via the taskbar are ignored.")]
-        [ChildSettingOf(nameof(BlockClose))]
-        public bool BlockCloseWhenMinimized
-        {
-            get => GetBool(nameof(BlockClose), false);
-            set => SetBool(nameof(BlockClose), value);
-        }
-
-        [DisplayName("CCP Window Width")]
-        [Description("Width of web browser for CCP state")]
-        public int CcpWidth
-        {
-            get => GetInt(nameof(CcpWidth), 400);
-            set => SetInt(nameof(CcpWidth), value);
-        }
-
-        [DisplayName("CCP Window Height")]
-        [Description("Height of web browser for CCP state")]
-        public int CcpHeight
-        {
-            get => GetInt(nameof(CcpHeight), 600);
-            set => SetInt(nameof(CcpHeight), value);
-        }
-    }
+```MSBuild
+<ItemGroup>
+    <PackageReference Include="Esatto.Win32.Registry" Version="3.0.5" />
+    <PackageReference Include="Esatto.Win32.Registry.AdmxExporter" Version="3.0.5" />
+</ItemGroup>
+```
 
 Example appearance in Group Policy Management Center (GPMC):
 
