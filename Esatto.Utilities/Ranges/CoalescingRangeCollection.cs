@@ -50,7 +50,7 @@ namespace Esatto.Utilities
                 bool invert = rest.StartsWith("^", StringComparison.Ordinal);
                 if (invert) rest = rest.Substring(1).TrimStart();
 
-                var iDash = part.IndexOf('-', StringComparison.Ordinal);
+                var iDash = part.IndexOf("-", StringComparison.Ordinal);
                 Range elem;
                 if (iDash == 0)
                 {

@@ -50,11 +50,11 @@ namespace Esatto.Utilities
             }
             if (totalHours != 0)
             {
-                sb.Append(CultureInfo.InvariantCulture, $"{totalHours}h");
+                sb.Append(totalHours.ToString(CultureInfo.InvariantCulture) + "h");
             }
             if (minutes != 0)
             {
-                sb.Append(CultureInfo.InvariantCulture, $"{minutes}m");
+                sb.Append(minutes.ToString(CultureInfo.InvariantCulture) + "m");
             }
             if (totalHours == 0 && minutes == 0)
             {

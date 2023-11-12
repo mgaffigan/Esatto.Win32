@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-    <Nullable Condition="'$(TargetFramework)' != 'net48'">enable</Nullable>
-    <Nullable Condition="'$(TargetFramework)' == 'net48'">annotations</Nullable>
+    <Nullable Condition="'$(TargetFramework)' != 'net462'">enable</Nullable>
+    <Nullable Condition="'$(TargetFramework)' == 'net462'">annotations</Nullable>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>true</ImplicitUsings>
     <AnalysisMode>Recommended</AnalysisMode>
@@ -14,10 +14,10 @@
     <WarningsAsErrors>Nullable;CA1806;CA1307;CA1309;CA1310</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>3.0.4</Version>
+    <Version>3.0.6</Version>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Not supported on net48 -->
+    <!-- Not supported on net462 -->
     <Using Remove="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
