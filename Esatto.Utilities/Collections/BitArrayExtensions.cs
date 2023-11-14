@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace BitArrayExtensions
+namespace Esatto.Utilities
 {
     public static class BitArrayExtensionsClass
     {

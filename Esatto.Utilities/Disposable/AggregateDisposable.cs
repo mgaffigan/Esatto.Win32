@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Esatto.Utilities.Disposable
+namespace Esatto.Utilities
 {
     public sealed class AggregateDisposable : IDisposable
     {

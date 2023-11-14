@@ -1,4 +1,4 @@
-﻿namespace DateTimeExtensions
+﻿namespace Esatto.Utilities
 {
     public static class DateTimeExtensionClass
     {

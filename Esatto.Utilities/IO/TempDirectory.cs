@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 
-namespace Itp.Dms.Utilities
+namespace Esatto.Utilities
 {
     [ImmutableObject(true)]
     public class TempDirectory : IDisposable
