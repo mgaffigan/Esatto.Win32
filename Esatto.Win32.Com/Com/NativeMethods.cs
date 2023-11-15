@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Esatto.Win32.Com
 {
-    internal static class NativeMethods
+    internal static partial class NativeMethods
     {
         private const string Ole32 = "ole32.dll";
         private const string User32 = "user32.dll";
@@ -24,6 +24,7 @@ namespace Esatto.Win32.Com
         public const int RPC_E_CANTCALLOUT_ININPUTSYNCCALL = unchecked((int)0x8001010D);
         public const int E_NOINTERFACE = unchecked((int)0x80004002);
         public const int MK_E_UNAVAILABLE = unchecked((int)0x800401E3);
+        public const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154);
         public const int S_OK = 0;
         public const int ASFW_ANY = -1;
 

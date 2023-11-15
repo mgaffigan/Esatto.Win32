@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Esatto.Win32.Com
 {
+    using System.Diagnostics;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using static NativeMethods;
@@ -50,7 +51,13 @@ namespace Esatto.Win32.Com
             return (TInterface)CoCreateInstance(clsid, null, CLSCTX.LOCAL_SERVER, typeof(TInterface).GUID);
         }
 
-        public static object CreateLocalServer(string progid)
+        public static object CreateLocalServer(string progid) 
+            => CreateLocalServer(GetClsidFromProgID(progid));
+
+        public static TInterface CreateLocalServer<TInterface>(string progid) 
+            => CreateLocalServer<TInterface>(GetClsidFromProgID(progid));
+
+        private static Guid GetClsidFromProgID(string progid)
         {
             if (string.IsNullOrEmpty(progid))
             {
@@ -59,19 +66,41 @@ namespace Esatto.Win32.Com
 
             Guid clsid;
             CLSIDFromProgID(progid, out clsid);
-            return CreateLocalServer(clsid);
+            return clsid;
         }
 
-        public static TInterface CreateLocalServer<TInterface>(string progid)
-        {
-            if (string.IsNullOrEmpty(progid))
-            {
-                throw new ArgumentException("Contract assertion not met: !string.IsNullOrEmpty(progid)", nameof(progid));
-            }
+        public static object CreateLocalServerWithStart(string progid, string serverExe)
+            => CreateLocalServerWithStart(GetClsidFromProgID(progid), serverExe);
 
-            Guid clsid;
-            CLSIDFromProgID(progid, out clsid);
-            return CreateLocalServer<TInterface>(clsid);
+        public static TInterface CreateLocalServerWithStart<TInterface>(string progid, string serverExe)
+            => CreateLocalServerWithStart<TInterface>(GetClsidFromProgID(progid), serverExe);
+
+        public static object CreateLocalServerWithStart(Guid clsid, string serverExe)
+        {
+            try
+            {
+                return CreateLocalServer(clsid);
+            }
+            catch (COMException cex) when (cex.HResult == REGDB_E_CLASSNOTREG)
+            {
+                using var proc = Process.Start(serverExe);
+                proc.WaitForInputIdle();
+                return CreateLocalServer(clsid);
+            }
+        }
+
+        public static TInterface CreateLocalServerWithStart<TInterface>(Guid clsid, string serverExe)
+        {
+            try
+            {
+                return CreateLocalServer<TInterface>(clsid);
+            }
+            catch (COMException cex) when (cex.HResult == REGDB_E_CLASSNOTREG)
+            {
+                using var proc = Process.Start(serverExe);
+                proc.WaitForInputIdle();
+                return CreateLocalServer<TInterface>(clsid);
+            }
         }
 
         public static void CoAllowSetForegroundWindow(object obj) => NativeMethods.CoAllowSetForegroundWindow(obj, IntPtr.Zero);
