@@ -7,10 +7,11 @@
     <Title>Esatto Win32 COM</Title>
     <Description>Wrappers allowing easy creation of Out-of-process COM servers</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.7</Version>
+    <Version>3.0.9</Version>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>
+    <None Include="NetCoreIssue\StandardOleMarshalObject.cs" />
     <None Include="Readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
