@@ -14,7 +14,7 @@ namespace Esatto.Win32.Windows
 {
     internal static partial class NativeMethods
     {
-        private const string User32 = "user32.dll";
+        private const string User32 = "user32.dll", Dwmapi = "Dwmapi.dll";
         internal const int MAX_PATH = 260;
         internal const int WM_GETTEXT = 0xD;
         internal const int WM_MDIGETACTIVE = 0x0229;
@@ -211,6 +211,11 @@ namespace Esatto.Win32.Windows
                 }
             }
 
+            public static explicit operator RECT(Rect r)
+            {
+                return new RECT((int)r.Left, (int)r.Top, (int)r.Right, (int)r.Bottom);
+            }
+
             public static explicit operator Int32Rect(RECT r)
             {
                 return new Int32Rect(r.left, r.top, r.Width, r.Height);
@@ -235,6 +240,9 @@ namespace Esatto.Win32.Windows
 
             return (Rect)w32Rect;
         }
+
+        [DllImport(Dwmapi, PreserveSig = false)]
+        public static extern void DwmGetWindowAttribute(IntPtr hWnd, uint dwAttribute, out RECT pvAttribute, int cbAttribute);
 
         [DllImport(User32, ExactSpelling = true)]
         public static extern IntPtr GetParent(IntPtr hWnd);
@@ -274,90 +282,6 @@ namespace Esatto.Win32.Windows
         [DllImport(User32, ExactSpelling = true, SetLastError = true)]
         public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
-        public enum ShowWindowCommands : uint
-        {
-            /// <summary>
-            /// Hides the window and activates another window.
-            /// </summary>
-            Hide = 0,
-
-            /// <summary>
-            /// Activates and displays a window. If the window is minimized or
-            /// maximized, the system restores it to its original size and position.
-            /// An application should specify this flag when displaying the window
-            /// for the first time.
-            /// </summary>
-            Normal = 1,
-
-            /// <summary>
-            /// Activates the window and displays it as a minimized window.
-            /// </summary>
-            ShowMinimized = 2,
-
-            /// <summary>
-            /// Maximizes the specified window.
-            /// </summary>
-            Maximize = 3,
-
-            /// <summary>
-            /// Activates the window and displays it as a maximized window.
-            /// </summary>
-            ShowMaximized = 3,
-
-            /// <summary>
-            /// Displays a window in its most recent size and position. This value
-            /// is similar to <see cref="Win32.ShowWindowCommand.Normal"/>, except
-            /// the window is not activated.
-            /// </summary>
-            ShowNoActivate = 4,
-
-            /// <summary>
-            /// Activates the window and displays it in its current size and position.
-            /// </summary>
-            Show = 5,
-
-            /// <summary>
-            /// Minimizes the specified window and activates the next top-level
-            /// window in the Z order.
-            /// </summary>
-            Minimize = 6,
-
-            /// <summary>
-            /// Displays the window as a minimized window. This value is similar to
-            /// <see cref="Win32.ShowWindowCommand.ShowMinimized"/>, except the
-            /// window is not activated.
-            /// </summary>
-            ShowMinNoActive = 7,
-
-            /// <summary>
-            /// Displays the window in its current size and position. This value is
-            /// similar to <see cref="Win32.ShowWindowCommand.Show"/>, except the
-            /// window is not activated.
-            /// </summary>
-            ShowNA = 8,
-
-            /// <summary>
-            /// Activates and displays the window. If the window is minimized or
-            /// maximized, the system restores it to its original size and position.
-            /// An application should specify this flag when restoring a minimized window.
-            /// </summary>
-            Restore = 9,
-
-            /// <summary>
-            /// Sets the show state based on the SW_* value specified in the
-            /// STARTUPINFO structure passed to the CreateProcess function by the
-            /// program that started the application.
-            /// </summary>
-            ShowDefault = 10,
-
-            /// <summary>
-            ///  <b>Windows 2000/XP:</b> Minimizes a window, even if the thread
-            /// that owns the window is not responding. This flag should only be
-            /// used when minimizing windows from a different thread.
-            /// </summary>
-            ForceMinimize = 11
-        }
-
         [StructLayout(LayoutKind.Sequential)]
         public struct WINDOWPLACEMENT
         {
@@ -372,12 +296,12 @@ namespace Esatto.Win32.Windows
             /// <summary>
             /// Specifies flags that control the position of the minimized window and the method by which the window is restored.
             /// </summary>
-            public int Flags;
+            public WindowPlacementFlags Flags;
 
             /// <summary>
             /// The current show state of the window.
             /// </summary>
-            public ShowWindowCommands ShowCmd;
+            public ShowWindowCommand ShowCmd;
 
             /// <summary>
             /// The coordinates of the window's upper-left corner when the window is minimized.
@@ -406,6 +330,20 @@ namespace Esatto.Win32.Windows
                     return result;
                 }
             }
+
+            public WINDOWPLACEMENT()
+            {
+            }
+
+            public WINDOWPLACEMENT(WindowPlacement wp)
+            {
+                this.Length = Marshal.SizeOf<WINDOWPLACEMENT>();
+                this.Flags = wp.Flags;
+                this.ShowCmd = wp.ShowCmd;
+                this.MinPosition = (POINT)wp.MinPosition;
+                this.MaxPosition = (POINT)wp.MaxPosition;
+                this.NormalPosition = (RECT)wp.NormalPosition;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -433,10 +371,32 @@ namespace Esatto.Win32.Windows
             {
                 return new POINT(p.X, p.Y);
             }
+
+            public static explicit operator System.Windows.Point(POINT p)
+            {
+                return new System.Windows.Point(p.X, p.Y);
+            }
+
+            public static explicit operator POINT(System.Windows.Point p)
+            {
+                return new POINT((int)p.X, (int)p.Y);
+            }
         }
 
         [DllImport(User32, SetLastError = true)]
         private static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
+        [DllImport(User32, SetLastError = true)]
+        private static extern bool SetWindowPlacement(IntPtr hWnd, in WINDOWPLACEMENT lpwndpl);
+
+        public static void SetWindowPlacement(IntPtr hWnd, WindowPlacement placement)
+        {
+            var wp = new WINDOWPLACEMENT(placement);
+            if (!SetWindowPlacement(hWnd, wp))
+            {
+                throw new Win32Exception();
+            }
+        }
 
         public static WINDOWPLACEMENT GetWindowPlacement(IntPtr hWnd)
         {
@@ -509,7 +469,7 @@ namespace Esatto.Win32.Windows
         public const int SWP_SHOWWINDOW = 0x0040;
 
         [DllImport(User32)]
-        public static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
+        public static extern bool ShowWindow(IntPtr hwnd, ShowWindowCommand nCmdShow);
 
         [DllImport(User32)]
         public static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
@@ -521,69 +481,6 @@ namespace Esatto.Win32.Windows
         public const int WS_EX_TOOLWINDOW = 0x00000080;
         public const int GWL_EXSTYLE = -20;
         public const int GWL_STYLE = -16;
-
-        public enum cmdShow
-        {
-            /// <summary>
-            /// Minimizes a window, even if the thread that owns the window is not responding.This flag should only be used when minimizing windows from a different thread.
-            /// </summary>
-            SW_FORCEMINIMIZE = 11,
-
-            /// <summary>
-            /// Hides the window and activates another window.
-            /// </summary>
-            SW_HIDE = 0,
-
-            /// <summary>
-            ///  Maximizes the specified window.
-            /// </summary>
-            SW_MAXIMIZE = 3,
-
-            /// <summary>
-            /// Minimizes the specified window and activates the next top-level window in the Z order.
-            /// </summary>
-            SW_MINIMIZE = 6,
-
-            /// <summary>
-            /// Activate and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.
-            /// </summary>
-            SW_RESTORE = 9,
-
-            /// <summary>
-            /// Activates the window and displays it in its current size and position.
-            /// </summary>
-            SW_SHOW = 5,
-
-            /// <summary>
-            /// Sets the show state based on the SW_ value specified in the STARTUPINFO structure passed to the CreateProcess function by the program that started the application.
-            /// </summary>
-            SW_SHOWDEFAULT = 10,
-
-            /// <summary>
-            /// Activates the window and displays it as a minimized window.
-            /// </summary>
-            SW_SHOWMINIMIZED = 2,
-
-            /// <summary>
-            /// Displays the window as a minimized window.This value is similar to SW_SHOWMINIMIZED, except the window is not activated.
-            /// </summary>
-            SW_SHOWMINNOACTIVE = 7,
-
-            /// <summary>
-            /// Displays the window in its current size and position.This value is similar to SW_SHOW, except that the window is not activated.
-            /// </summary>
-            SW_SHOWNA = 8,
-
-            /// <summary>
-            /// Displays a window in its most recent size and position. This value is similar to SW_SHOWNORMAL, except that the window is not activated.
-            /// </summary>
-            SW_SHOWNOACTIVATE = 4,
-
-            /// <summary>
-            /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
-            /// </summary>
-            SW_SHOWNORMAL = 1,
-        }
 
         [Flags]
         public enum MONITORINFOF

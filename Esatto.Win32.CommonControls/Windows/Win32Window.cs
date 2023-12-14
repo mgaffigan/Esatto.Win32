@@ -38,6 +38,17 @@ namespace Esatto.Win32.Windows
             return new Win32Window(NativeMethods.GetActiveWindow());
         }
 
+        public WindowPlacement GetWindowPlacement()
+        {
+            var wp = NativeMethods.GetWindowPlacement(this.Handle);
+            return new WindowPlacement(wp);
+        }
+
+        public void SetWindowPlacement(WindowPlacement placement)
+        {
+            NativeMethods.SetWindowPlacement(this.Handle, placement);
+        }
+
         public Win32Window GetActiveMdiChild()
         {
             return new Win32Window(NativeMethods.MdiGetActive(Handle));
@@ -149,15 +160,40 @@ namespace Esatto.Win32.Windows
 
         public Rect GetBounds() => NativeMethods.GetWindowRect(this.Handle);
 
+        public Rect GetBoundsWithoutShadow()
+        {
+            NativeMethods.DwmGetWindowAttribute(this.Handle, 9 /* DWMWA_EXTENDED_FRAME_BOUNDS */,
+                out var bounds, Marshal.SizeOf<NativeMethods.RECT>());
+            return (Rect)bounds;
+        }
+
+        public (Rect bounds, Thickness shadowThickness) GetBoundsWithShadowThickness()
+        {
+            var frameBounds = GetBoundsWithoutShadow();
+            var clientBounds = GetBounds();
+            var thickness = new Thickness(
+                frameBounds.Left - clientBounds.Left,
+                frameBounds.Top - clientBounds.Top,
+                clientBounds.Right - frameBounds.Right,
+                clientBounds.Bottom - frameBounds.Bottom);
+            return (clientBounds, thickness);
+        }
+
         public void SetBounds(Rect bounds) => NativeMethods.SetWindowPos(this.Handle, 0,
             (int)bounds.Left, (int)bounds.Top, (int)bounds.Width, (int)bounds.Height,
             NativeMethods.SWP_NOZORDER);
 
-        public bool Show() => NativeMethods.ShowWindow(this.Handle, (int)NativeMethods.cmdShow.SW_SHOW);
+        public bool Show() => NativeMethods.ShowWindow(this.Handle, ShowWindowCommand.Show);
 
-        public bool Hide() => NativeMethods.ShowWindow(this.Handle, (int)NativeMethods.cmdShow.SW_HIDE);
+        public bool Minimize() => NativeMethods.ShowWindow(this.Handle, ShowWindowCommand.Minimize);
 
-        public uint GetWindowStyle() => NativeMethods.GetWindowLong(this.Handle, NativeMethods.GWL_STYLE);
+        public bool Maximize() => NativeMethods.ShowWindow(this.Handle, ShowWindowCommand.Maximize);
+
+        public bool Restore() => NativeMethods.ShowWindow(this.Handle, ShowWindowCommand.Restore);
+
+        public bool Hide() => NativeMethods.ShowWindow(this.Handle, ShowWindowCommand.Hide);
+
+        public WindowStyles GetWindowStyle() => (WindowStyles)NativeMethods.GetWindowLong(this.Handle, NativeMethods.GWL_STYLE);
 
         public string GetClassName() => NativeMethods.GetClassName(this.Handle);
 
@@ -184,7 +220,14 @@ namespace Esatto.Win32.Windows
         public bool GetIsShown()
         {
             var windowPlacement = NativeMethods.GetWindowPlacement(this.Handle);
-            return windowPlacement.ShowCmd != NativeMethods.ShowWindowCommands.Hide;
+            return windowPlacement.ShowCmd != ShowWindowCommand.Hide;
+        }
+
+        public bool GetIsMaximized()
+        {
+            var windowPlacement = NativeMethods.GetWindowPlacement(this.Handle);
+            return windowPlacement.ShowCmd == ShowWindowCommand.Maximize
+                || windowPlacement.ShowCmd == ShowWindowCommand.ShowMaximized;
         }
 
         public bool GetIsVisible()
