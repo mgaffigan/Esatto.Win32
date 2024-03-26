@@ -16,7 +16,7 @@ jobs:
     - name: Restore nuget
       run: nuget restore Esatto.Win32.sln
     - name: Build
-      run: dotnet pack Esatto.Win32.sln -c Release -p PackageOutputPath=${{GITHUB_WORKSPACE}}/dist
+      run: dotnet pack Esatto.Win32.sln -c Release -p PackageOutputPath=${{github.workspace}}/dist
     - name: NugetPush
       run: dotnet nuget push -s https://api.nuget.org/v3/index.json --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate "dist/*.nupkg"
     - name: Upload Release
