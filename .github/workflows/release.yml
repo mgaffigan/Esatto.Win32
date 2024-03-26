@@ -16,7 +16,10 @@ jobs:
     - name: Restore nuget
       run: nuget restore Esatto.Win32.sln
     - name: Build
-      run: dotnet pack Esatto.Win32.sln -c Release
-    # Use */*/**/*.nupkg to avoid pushing the packages folder
+      run: dotnet pack Esatto.Win32.sln -c Release -p PackageOutputPath=${{GITHUB_WORKSPACE}}/dist
     - name: NugetPush
-      run: dotnet nuget push -s https://api.nuget.org/v3/index.json --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate "*/*/**/*.nupkg"
+      run: dotnet nuget push -s https://api.nuget.org/v3/index.json --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate "dist/*.nupkg"
+    - name: Upload Release
+      uses: ncipollo/release-action@v1.13.0
+      with:
+        artifacts: "dist/*.nupkg"
