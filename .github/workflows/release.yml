@@ -12,11 +12,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 7.0.x
+    # Use nuget restore instead of dotnet to support packages.config in Esatto.Win32.NetInjector.NetFx
+    - name: Restore nuget
+      run: nuget restore Esatto.Win32.sln
     - name: Build
-      run: dotnet pack Esatto.Win32.sln -c Release --verbosity normal
+      run: dotnet pack Esatto.Win32.sln -c Release
     - name: NugetPush
       run: dotnet nuget push -s https://api.nuget.org/v3/index.json --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate "**/*.nupkg"
