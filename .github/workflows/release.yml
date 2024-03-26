@@ -17,6 +17,6 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Build
-      run: dotnet pack Esatto.Win32.sln -c Release --verbosity detailed
+      run: dotnet pack Esatto.Win32.sln -c Release --verbosity normal
     - name: NugetPush
       run: dotnet nuget push -s https://api.nuget.org/v3/index.json --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate "**/*.nupkg"
