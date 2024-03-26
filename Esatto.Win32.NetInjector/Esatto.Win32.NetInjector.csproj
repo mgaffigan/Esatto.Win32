@@ -9,7 +9,7 @@
     <Version>3.0.11</Version>
     <Description>Injects a .NET DLL into a remote process</Description>
     <PackageTags>Hook;inject;netfx</PackageTags>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
 
