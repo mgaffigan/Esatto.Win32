@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Title>Esatto Win32 NetInjector</Title>
+    <Version>3.0.11</Version>
+    <Description>Injects a .NET DLL into a remote process</Description>
+    <PackageTags>Hook;inject;netfx</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/mgaffigan/CrossProcessHooks/tree/master/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <Import Project="..\assets\EsattoCSCommon.targets" />
+
+  <ItemGroup>
+    <None Include="Readme.md" Pack="true" PackagePath="\" />
+    <None Include="Sdk.targets" Pack="true" PackagePath="Sdk\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <MsbuildLoc>C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe</MsbuildLoc>
+    <NetfxVcxproj>..\Esatto.Win32.NetInjector.NetFx\Esatto.Win32.NetInjector.NetFx.vcxproj</NetfxVcxproj>
+  </PropertyGroup>
+
+  <Target Name="CleanBoth" BeforeTargets="Clean">
+    <Exec Command="&quot;$(MsbuildLoc)&quot; &quot;$(NetfxVcxproj)&quot; /t:Clean /p:Configuration=$(Configuration) /p:Platform=Win32" />
+    <Exec Command="&quot;$(MsbuildLoc)&quot; &quot;$(NetfxVcxproj)&quot; /t:Clean /p:Configuration=$(Configuration) /p:Platform=x64" />
+  </Target>
+
+  <Target Name="BuildBoth" BeforeTargets="Build">
+    <Exec Command="&quot;$(MsbuildLoc)&quot; &quot;$(NetfxVcxproj)&quot; /t:Build /p:Configuration=$(Configuration) /p:Platform=Win32" />
+    <Exec Command="&quot;$(MsbuildLoc)&quot; &quot;$(NetfxVcxproj)&quot; /t:Build /p:Configuration=$(Configuration) /p:Platform=x64" />
+
+    <ItemGroup>
+      <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\Win32\$(Configuration)\Esatto.Win32.NetInjector.NetFx.dll" Pack="true" PackagePath="\runtimes\win-x86\native\" />
+      <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\Win32\$(Configuration)\Esatto.Win32.NetInjector.NetFx.pdb" Pack="true" PackagePath="\runtimes\win-x86\native\" />
+
+      <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\x64\$(Configuration)\Esatto.Win32.NetInjector.NetFx.dll" Pack="true" PackagePath="\runtimes\win-x64\native\" />
+      <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\x64\$(Configuration)\Esatto.Win32.NetInjector.NetFx.pdb" Pack="true" PackagePath="\runtimes\win-x64\native\" />
+    </ItemGroup>
+  </Target>
+</Project>

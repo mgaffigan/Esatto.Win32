@@ -60,6 +60,14 @@ Windows Registry including Group Policy and ADMX Generation
 
 [More information](Esatto.Win32.CommonControls/Readme.md)
 
+## Esatto.Win32.NetInjector
+
+[![Nuget](https://img.shields.io/nuget/v/Esatto.Win32.NetInjector)](https://www.nuget.org/packages/Esatto.Win32.NetInjector)
+
+Inject a .Net DLL into a remote process.
+
+[More information](Esatto.Win32.NetInjector/Readme.md)
+
 ## Esatto.Utilities
 
 [![Nuget](https://img.shields.io/nuget/v/Esatto.Utilities)](https://www.nuget.org/packages/Esatto.Utilities)

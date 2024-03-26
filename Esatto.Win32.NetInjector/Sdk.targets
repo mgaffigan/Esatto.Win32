@@ -1,0 +1,14 @@
+﻿<Project>
+  <Target Name="foo">
+    <Error Text="NetInjector requires PlatformTarget to be x86 or x64"
+           Condition="'$(SuppressNetInjectorIncludeError)' != 'true' and !('$(PlatformTarget)' == 'x86' or '$(PlatformTarget)' == 'x64')" />
+    <ItemGroup Condition="'$(PlatformTarget)' == 'x86' or '$(PlatformTarget)' == 'x64'">
+      <Content Include="$(MSBuildThisFileDirectory)runtimes\win-$(PlatformTarget)\native\**.*">
+        <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <PublishState>Included</PublishState>
+        <Visible>false</Visible>
+      </Content>
+    </ItemGroup>
+  </Target>
+</Project>

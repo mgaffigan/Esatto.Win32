@@ -1,0 +1,5 @@
+LIBRARY
+EXPORTS
+	MessageHookProc	@1
+	RunAssemblyRemote
+	RunAssembly
