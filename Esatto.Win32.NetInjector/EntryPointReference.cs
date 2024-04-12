@@ -11,6 +11,19 @@ namespace Esatto.Win32.NetInjector
 
         public EntryPointReference(string path, string type, string method)
         {
+            if (string.IsNullOrWhiteSpace(path) || path.IndexOf('\0') >= 0)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+            if (string.IsNullOrWhiteSpace(type) || type.IndexOf('\0') >= 0)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+            if (string.IsNullOrWhiteSpace(method) || method.IndexOf('\0') >= 0)
+            {
+                throw new ArgumentNullException(nameof(method));
+            }
+
             this.AssemblyPath = path;
             this.TypeName = type;
             this.MethodName = method;

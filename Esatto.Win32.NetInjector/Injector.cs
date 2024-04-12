@@ -9,6 +9,20 @@ namespace Esatto.Win32.NetInjector
     {
         public static void Inject(IntPtr hWnd, EntryPointReference entryPoint, string? argValue = null, string? runtimeVersion = null)
         {
+            // struct, so TypeName might be null despite the constructor
+            if (entryPoint.TypeName is null)
+            {
+                throw new ArgumentNullException(nameof(entryPoint));
+            }
+            if (argValue is not null && argValue.IndexOf('\0') >= 0)
+            {
+                throw new ArgumentException("argValue cannot contain null characters", nameof(argValue));
+            }
+            if (runtimeVersion is not null && runtimeVersion.IndexOf('\0') >= 0)
+            {
+                throw new ArgumentException("runtimeVersion cannot contain null characters", nameof(runtimeVersion));
+            }
+
             RunAssemblyRemote(
                 hWnd, runtimeVersion,
                 entryPoint.AssemblyPath, entryPoint.TypeName, entryPoint.MethodName,
