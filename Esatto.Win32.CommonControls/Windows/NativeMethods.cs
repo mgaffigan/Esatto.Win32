@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +19,7 @@ namespace Esatto.Win32.Windows
         internal const int MAX_PATH = 260;
         internal const int WM_GETTEXT = 0xD;
         internal const int WM_MDIGETACTIVE = 0x0229;
+        internal const int WM_COMMAND = 0x0111;
         internal const int SM_SHUTTINGDOWN = 0x2000;
 
         [DllImport(User32, ExactSpelling = true, SetLastError = false)]
@@ -143,7 +145,10 @@ namespace Esatto.Win32.Windows
         internal static extern int GetWindowTextLength(IntPtr hWnd);
 
         [DllImport(User32, CharSet = CharSet.Auto)]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, StringBuilder lParam);
+        internal static extern nint SendMessage(nint hWnd, int Msg, nint wParam, StringBuilder lParam);
+
+        [DllImport(User32, CharSet = CharSet.Auto)]
+        internal static extern nint SendMessage(nint hWnd, int Msg, nint wParam, nint lParam);
 
         public static string GetWindowText(IntPtr hWnd)
         {
@@ -162,12 +167,45 @@ namespace Esatto.Win32.Windows
             return sb.ToString();
         }
 
+        [DllImport(User32, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool SetWindowText(IntPtr hWnd, string text);
+
         public static string WMGetText(IntPtr hWnd)
         {
             var sb = new StringBuilder(8192);
             SendMessage(hWnd, WM_GETTEXT, sb.Capacity, sb);
             return sb.ToString();
         }
+
+        [DllImport("user32.dll", ExactSpelling = true)]
+        internal static extern nint GetMenu(nint hWnd);
+
+        [DllImport("user32.dll", ExactSpelling = true)]
+        internal static extern int GetMenuItemID(nint hMenu, int nPos);
+
+        [DllImport("user32.dll", ExactSpelling = true, EntryPoint = "GetMenuStringW")]
+        private static unsafe extern int GetMenuString(nint hMenu, int uIDItem, char* lpString, int cchMax, int flags);
+
+        public const int MF_BYPOSITION = 0x400;
+
+        [DllImport("user32.dll", ExactSpelling = true)]
+        internal static extern nint GetSubMenu(nint hMenu, int nPos);
+
+        public static unsafe string GetMenuString(nint hMenu, int uIDItem, int flags)
+        {
+            const int cchMax = 256;
+            char* buffer = stackalloc char[cchMax];
+            int length = GetMenuString(hMenu, uIDItem, buffer, cchMax, flags);
+            if (length == 0)
+            {
+                throw new Win32Exception();
+            }
+            return new string(buffer, 0, length);
+        }
+
+        [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
+        internal static extern int GetMenuItemCount(nint hMenu);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT

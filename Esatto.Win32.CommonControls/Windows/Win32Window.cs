@@ -54,6 +54,26 @@ namespace Esatto.Win32.Windows
             return new Win32Window(NativeMethods.MdiGetActive(Handle));
         }
 
+        public Win32Menu GetMenu()
+        {
+            var hMenu = NativeMethods.GetMenu(this.Handle);
+            if (hMenu == IntPtr.Zero)
+            {
+                throw new Win32Exception();
+            }
+            return new Win32Menu(hMenu);
+        }
+
+        public void InvokeMenuItem(params string[] menus)
+        {
+            var menu = GetMenu().GetPath(menus) as Win32MenuItem;
+            if (menu == null)
+            {
+                throw new InvalidOperationException("Menu item is not a command");
+            }
+            menu.Invoke(this);
+        }
+
         public Point ScreenToClient(Point screen)
         {
             var pt = new System.Drawing.Point((int)screen.X, (int)screen.Y);
@@ -200,6 +220,8 @@ namespace Esatto.Win32.Windows
         public string GetClassNameOrDefault() => NativeMethods.GetClassName(this.Handle, throwOnError: false);
 
         public string GetWindowText() => NativeMethods.GetWindowText(this.Handle);
+
+        public bool SetWindowText(string text) => NativeMethods.SetWindowText(this.Handle, text);
 
         public string WMGetText() => NativeMethods.WMGetText(this.Handle);
 

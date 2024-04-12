@@ -11,7 +11,7 @@
     <Title>Esatto Win32 Common Controls</Title>
     <Description>Tools for manipulating HWNDs, watching other windows, and utilizing shell registrations</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.10</Version>
+    <Version>3.0.14</Version>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>
