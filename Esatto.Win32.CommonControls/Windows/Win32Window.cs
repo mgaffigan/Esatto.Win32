@@ -287,7 +287,7 @@ namespace Esatto.Win32.Windows
 
         public override int GetHashCode() => Handle.GetHashCode();
 
-        public static bool operator ==(Win32Window a, Win32Window b)
+        public static bool operator ==(Win32Window? a, Win32Window? b)
         {
             if (ReferenceEquals(a, b))
             {
@@ -303,7 +303,7 @@ namespace Esatto.Win32.Windows
             return a.Equals(b);
         }
 
-        public static bool operator !=(Win32Window a, Win32Window b)
+        public static bool operator !=(Win32Window? a, Win32Window? b)
         {
             return !(a == b);
         }
