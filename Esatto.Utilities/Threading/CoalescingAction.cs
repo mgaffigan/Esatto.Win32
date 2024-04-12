@@ -28,20 +28,16 @@
         public CoalescingAction(Action action, TimeSpan coalescingPeriod,
             TimeSpan maximumLatency)
         {
-            if (action == null)
+            if (coalescingPeriod < TimeSpan.Zero)
             {
-                throw new ArgumentNullException(nameof(action), "Contract assertion not met: action != null");
+                throw new ArgumentOutOfRangeException(nameof(coalescingPeriod));
             }
-            if (!(coalescingPeriod >= TimeSpan.Zero))
+            if (maximumLatency < coalescingPeriod && maximumLatency != Timeout.InfiniteTimeSpan)
             {
-                throw new ArgumentException("Contract assertion not met: coalescingPeriod >= TimeSpan.Zero", nameof(coalescingPeriod));
-            }
-            if (!(maximumLatency >= coalescingPeriod))
-            {
-                throw new ArgumentException("Contract assertion not met: maximumLatency >= coalescingPeriod", nameof(maximumLatency));
+                throw new ArgumentOutOfRangeException(nameof(maximumLatency));
             }
 
-            this.Action = action;
+            this.Action = action ?? throw new ArgumentNullException(nameof(action));
             this.CoalescePeriod = coalescingPeriod;
             this.MaximumLatency = maximumLatency;
 
@@ -55,12 +51,12 @@
                 var now = DateTime.UtcNow;
                 var nextRun = now + CoalescePeriod;
 
-                if (maxDueTime == default(DateTime))
+                if (maxDueTime == default && MaximumLatency != Timeout.InfiniteTimeSpan)
                 {
                     maxDueTime = now + MaximumLatency;
                 }
 
-                if (nextRun > maxDueTime)
+                if (nextRun > maxDueTime && maxDueTime != default)
                 {
                     nextRun = maxDueTime;
                 }

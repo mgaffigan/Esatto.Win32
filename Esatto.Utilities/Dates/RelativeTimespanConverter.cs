@@ -64,7 +64,7 @@ namespace Esatto.Utilities
             return sb.ToString();
         }
 
-        public static TimeSpan? StringToTimespan(string sval, DateTime? relativeToNull)
+        public static TimeSpan? StringToTimespan(string? sval, DateTime? relativeToNull)
         {
             if (string.IsNullOrWhiteSpace(sval))
             {

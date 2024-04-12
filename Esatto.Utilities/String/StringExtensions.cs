@@ -300,6 +300,27 @@ namespace Esatto.Utilities
                 return $"{lines[0]}...";
             }
         }
+        
+        public static string SanitizeToAz09(this string s, string extraAllowed = "")
+        {
+            StringBuilder sbResult = new StringBuilder(s.Length);
+
+            foreach (var c in s)
+            {
+#if NETFRAMEWORK
+                if (char.IsLetterOrDigit(c) || extraAllowed.IndexOf(c, StringComparison.Ordinal) >= 0)
+#elif NETSTANDARD
+                if (char.IsLetterOrDigit(c) || extraAllowed.Contains(c))
+#else
+                if (char.IsLetterOrDigit(c) || extraAllowed.Contains(c, StringComparison.Ordinal))
+#endif
+                {
+                        sbResult.Append(c);
+                }
+            }
+
+            return sbResult.ToString();
+        }
 
         public static string GetSha1Hash(this string @this)
         {

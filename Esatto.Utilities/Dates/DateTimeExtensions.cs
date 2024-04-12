@@ -1,6 +1,6 @@
 ﻿namespace Esatto.Utilities
 {
-    public static class DateTimeExtensionClass
+    public static class DateTimeExtensions
     {
         public static DateTime EarlierOf(this DateTime a, DateTime b)
         {

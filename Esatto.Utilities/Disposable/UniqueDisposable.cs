@@ -14,6 +14,7 @@ namespace Esatto.Utilities
             => new UniqueAsyncDisposable<T>(disposable);
 #endif
 
+        public static void DisposeAll(params IDisposable[] disposables) => disposables.DisposeAll();
         public static void DisposeAll(this IEnumerable<IDisposable> disposables)
         {
             var exceptions = new List<Exception>();
@@ -21,7 +22,7 @@ namespace Esatto.Utilities
             {
                 try
                 {
-                    disposable.Dispose();
+                    disposable?.Dispose();
                 }
                 catch (Exception ex)
                 {
@@ -31,6 +32,7 @@ namespace Esatto.Utilities
             exceptions.ThrowIfNotEmpty();
         }
 
+        public static ValueTask DisposeAllAsync(params IAsyncDisposable[] disposables) => disposables.DisposeAllAsync();
         public static async ValueTask DisposeAllAsync(this IEnumerable<IAsyncDisposable> disposables)
         {
             var exceptions = new List<Exception>();
@@ -38,7 +40,10 @@ namespace Esatto.Utilities
             {
                 try
                 {
-                    await disposable.DisposeAsync();
+                    if (disposable is not null)
+                    {
+                        await disposable.DisposeAsync();
+                    }
                 }
                 catch (Exception ex)
                 {
