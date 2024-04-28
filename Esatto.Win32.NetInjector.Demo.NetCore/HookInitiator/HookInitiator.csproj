@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>x86</PlatformTarget>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Can't do a PackageReference within the solution-->
+    <!--<PackageReference Include="Esatto.Win32.NetInjector" Version="1.0.4" />-->
+    <ProjectReference Include ="..\..\Esatto.Win32.NetInjector\Esatto.Win32.NetInjector.csproj" />
+    <ProjectReference Include="..\HookExample\HookExample.csproj" />
+  </ItemGroup>
+
+</Project>
