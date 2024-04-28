@@ -10,6 +10,8 @@ to invoke a static method in a remote process.
 - The injecting process must have permission to write to the target process
 - Type load will occur from the target process, so the injected method must not 
   rely upon assembly resolution of the source process.
+- If you specify `RuntimeVersions.LoadedNetCore`, the target process must have already
+  loaded the .NET Core loaded before injection.
 
 ## Example use
 
@@ -19,7 +21,7 @@ Add nuget reference to `Esatto.Win32.NetInjector`, find a target hWnd, and call 
 var process = Process.GetProcessesByName("FrameworkLTC").Single();
 // Alternatively: new EntryPointReference(@"c:\path\to\demohook.dll", "Namespace.DemoHook", "Inject");
 var ep = new EntryPointReference(typeof(DemoHook), nameof(DemoHook.Inject));
-Injetor.Inject(process.MainWindowHandle, ep, "Hello world!");
+Injetor.Inject(process.MainWindowHandle, ep, "Hello world!", RuntimeVersions.NetFxAny);
 
 public class DemoHook
 {
@@ -30,6 +32,9 @@ public class DemoHook
     }
 }
 ```
+
+Full examples [for .NET Framework](https://github.com/mgaffigan/Esatto.Win32/tree/master/Esatto.Win32.NetInjector.Demo.NetFx) 
+and [.NET Core](https://github.com/mgaffigan/Esatto.Win32/tree/master/Esatto.Win32.NetInjector.Demo.NetCore).
 
 ## Notes
 
