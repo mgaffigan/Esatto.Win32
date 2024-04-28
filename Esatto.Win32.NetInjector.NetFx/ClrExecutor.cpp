@@ -81,6 +81,23 @@ HRESULT GetRuntime(LPCWSTR pwzPreferredVersion, wil::com_ptr<ICLRRuntimeHost>& r
 typedef HRESULT(STDAPICALLTYPE* FnGetNETCoreCLRRuntimeHost)(REFIID riid, void** pUnk);
 
 HRESULT GetLoadedNetCoreRuntime(LPCWSTR pwzPreferredVersion, wil::com_ptr<ICLRRuntimeHost>& result) {
+	// Note: This uses API that is not yet deprecated, but is heading that way.  Work is underway
+	// to add an API to the .NET Core hosting API to replace this.  As of 2024-04-28, no such API
+	// has been added.
+	// 
+	// It sounds like the long-term will be:
+	// 1. To statically link nethost.lib
+	// 2. Use the nethost.lib API to locate hostfxr.dll
+	// 3. Load hostfxr.dll
+	// 4. Call hostfxr_get_runtime_delegate(nullptr, hdt_load_assembly_and_get_function_pointer)
+	// 5. Call p_hdt_load_assembly_and_get_function_pointer(...) to run the assembly
+	// 
+	// This is a lot more work than the current approach, but it is the future.  It also moves to a
+	// length-counted entrypoint (`static int Main(nint arg, int cbArg)` instead of `int main(string)`)
+	// 
+	// See https://github.com/dotnet/runtime/issues/52688 for discussion on removal.
+	// See https://github.com/dotnet/runtime/blob/main/docs/design/features/native-hosting.md#calling-managed-function-net-5-and-above for eventual replacement.
+
 	// There can only be one CoreCLR runtime in a process
 	wil::unique_hmodule coreCLRModule(::GetModuleHandle(L"coreclr.dll"));
 	RETURN_HR_IF_NULL(COR_E_FILENOTFOUND, coreCLRModule.get());

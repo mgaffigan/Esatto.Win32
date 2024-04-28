@@ -50,3 +50,4 @@ and [.NET Core](https://github.com/mgaffigan/Esatto.Win32/tree/master/Esatto.Win
   to reliably get returned to the injecting process.
 - Check debug output on the target process if hooks fail, typically this is the result
   of a required dependency assembly not being locatable by the target CLR.
+- The 
