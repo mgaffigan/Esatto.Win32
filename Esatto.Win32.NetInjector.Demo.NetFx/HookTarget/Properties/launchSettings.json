@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "HookTarget": {
+    "HookInitiator": {
       "commandName": "Project",
       "nativeDebugging": true
     }
