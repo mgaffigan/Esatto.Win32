@@ -5,4 +5,4 @@ using System.Diagnostics;
 
 var process = Process.GetProcessesByName("HookTarget").Single();
 //var ep = new EntryPointReference("HookExample.dll", "Type", nameof(SampleHook.Inject));
-Injector.Inject(process.MainWindowHandle, new(SampleHook.Inject), "Hello world");
+Injector.Inject(process.MainWindowHandle, new(SampleHook.Inject), "Hello world", RuntimeVersions.LoadedNetCore);

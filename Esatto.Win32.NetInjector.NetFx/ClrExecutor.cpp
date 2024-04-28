@@ -9,6 +9,7 @@
 #include "main.h"
 
 HRESULT GetRuntime(LPCWSTR pwzPreferredVersion, wil::com_ptr<ICLRRuntimeHost>& result);
+HRESULT GetLoadedNetCoreRuntime(LPCWSTR pwzPreferredVersion, wil::com_ptr<ICLRRuntimeHost>& result);
 
 extern "C" __declspec(dllexport) HRESULT __stdcall RunAssembly(
 	LPCWSTR pwzPreferredVersion,
@@ -17,8 +18,14 @@ extern "C" __declspec(dllexport) HRESULT __stdcall RunAssembly(
 	LPCWSTR pwzMethodName,
 	LPCWSTR pwzArgument
 ) {
+	std::wstring preferredVersion = pwzPreferredVersion ? pwzPreferredVersion : L"";
 	wil::com_ptr<ICLRRuntimeHost> host;
-	RETURN_IF_FAILED(GetRuntime(pwzPreferredVersion, host));
+	if (preferredVersion == L"netcore") {
+		RETURN_IF_FAILED(GetLoadedNetCoreRuntime(pwzPreferredVersion, host));
+	}
+	else {
+		RETURN_IF_FAILED(GetRuntime(pwzPreferredVersion, host));
+	}
 
 	DWORD returnValue = 0;
 	RETURN_IF_FAILED(host->ExecuteInDefaultAppDomain(pwzAssemblyPath, pwzTypeName, pwzMethodName, pwzArgument, &returnValue));
@@ -68,5 +75,20 @@ HRESULT GetRuntime(LPCWSTR pwzPreferredVersion, wil::com_ptr<ICLRRuntimeHost>& r
 	}
 
 	RETURN_IF_FAILED(currentInfo->GetInterface(CLSID_CLRRuntimeHost, IID_PPV_ARGS(&result)));
+	return S_OK;
+}
+
+typedef HRESULT(STDAPICALLTYPE* FnGetNETCoreCLRRuntimeHost)(REFIID riid, void** pUnk);
+
+HRESULT GetLoadedNetCoreRuntime(LPCWSTR pwzPreferredVersion, wil::com_ptr<ICLRRuntimeHost>& result) {
+	// There can only be one CoreCLR runtime in a process
+	wil::unique_hmodule coreCLRModule(::GetModuleHandle(L"coreclr.dll"));
+	RETURN_HR_IF_NULL(COR_E_FILENOTFOUND, coreCLRModule.get());
+
+	// Locate GetCLRRuntimeHost
+	const auto pfnGetCLRRuntimeHost = reinterpret_cast<FnGetNETCoreCLRRuntimeHost>(::GetProcAddress(coreCLRModule.get(), "GetCLRRuntimeHost"));
+	RETURN_HR_IF_NULL(COR_E_ENTRYPOINTNOTFOUND, pfnGetCLRRuntimeHost);
+
+	RETURN_IF_FAILED(pfnGetCLRRuntimeHost(IID_PPV_ARGS(&result)));
 	return S_OK;
 }
