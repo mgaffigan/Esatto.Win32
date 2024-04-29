@@ -7,10 +7,12 @@
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
+    
+    <!--
+    Since we might be loaded into a process that does not have netcore initialized, 
+    enable dynamic loading to generate *.runtimeconfig.json on build 
+    -->
+    <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Using Remove="System.Net.Http"/>
-  </ItemGroup>
   
 </Project>

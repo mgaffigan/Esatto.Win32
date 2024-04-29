@@ -11,14 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Remove="System.Net.Http" />
-  </ItemGroup>
-
-  <ItemGroup>
     <!-- Can't do a PackageReference within the solution-->
-    <!--<PackageReference Include="Esatto.Win32.NetInjector" Version="1.0.4" />-->
+    <!--<PackageReference Include="Esatto.Win32.NetInjector" Version="3.0.15-preview1" />-->
     <ProjectReference Include ="..\..\Esatto.Win32.NetInjector\Esatto.Win32.NetInjector.csproj" />
-    <ProjectReference Include="..\HookExample\HookExample.csproj" />
   </ItemGroup>
 
 </Project>

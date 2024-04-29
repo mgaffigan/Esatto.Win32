@@ -6,7 +6,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <Title>Esatto Win32 NetInjector</Title>
-    <Version>3.0.15</Version>
+    <Version>3.0.16</Version>
     <Description>Injects a .NET DLL into a remote process</Description>
     <PackageTags>Hook;inject;netfx</PackageTags>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
@@ -35,9 +35,11 @@
     <ItemGroup>
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\Win32\$(Configuration)\Esatto.Win32.NetInjector.NetFx.dll" Pack="true" PackagePath="\runtimes\win-x86\native\" />
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\Win32\$(Configuration)\Esatto.Win32.NetInjector.NetFx.pdb" Pack="true" PackagePath="\runtimes\win-x86\native\" />
+      <None Include="..\packages\runtime.win-x86.Microsoft.NETCore.DotNetAppHost.8.0.4\runtimes\win-x86\native\nethost.dll" Pack="true" PackagePath="\runtimes\win-x86\native\" />
 
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\x64\$(Configuration)\Esatto.Win32.NetInjector.NetFx.dll" Pack="true" PackagePath="\runtimes\win-x64\native\" />
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\x64\$(Configuration)\Esatto.Win32.NetInjector.NetFx.pdb" Pack="true" PackagePath="\runtimes\win-x64\native\" />
+      <None Include="..\packages\runtime.win-x64.Microsoft.NETCore.DotNetAppHost.8.0.4\runtimes\win-x64\native\nethost.dll" Pack="true" PackagePath="\runtimes\win-x64\native\" />
     </ItemGroup>
   </Target>
 </Project>
