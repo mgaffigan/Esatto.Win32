@@ -6,7 +6,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(AdmxExporterPath)' == ''">
     <AdmxExporterPath Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">"$(MSBuildThisFileDirectory)net462\Esatto.Win32.Registry.AdmxExporter.exe"</AdmxExporterPath>
-    <AdmxExporterPath Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">dotnet "$(MSBuildThisFileDirectory)net7.0/Esatto.Win32.Registry.AdmxExporter.dll"</AdmxExporterPath>
+    <AdmxExporterPath Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">dotnet "$(MSBuildThisFileDirectory)net8.0/Esatto.Win32.Registry.AdmxExporter.dll"</AdmxExporterPath>
   </PropertyGroup>
   <Target Name="PrepareForAdmxBuild" Condition="'$(TargetFramework)' != ''">
     <ItemGroup>

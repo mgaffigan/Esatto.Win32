@@ -18,7 +18,7 @@
     <IntermediatePackDir>$(MSBuildProjectDirectory)/bin/$(Configuration)/publish/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>authors=$(Authors);$(NuspecProperties)</NuspecProperties>
-    <NuspecProperties>version=$(Version);$(NuspecProperties)</NuspecProperties>
+    <NuspecProperties>version=$(VersionPrefix);$(NuspecProperties)</NuspecProperties>
     <NuspecProperties>title=$(Title);$(NuspecProperties)</NuspecProperties>
     <NuspecProperties>company=$(Company);$(NuspecProperties)</NuspecProperties>
     <NuspecProperties>copyright=$(Copyright);$(NuspecProperties)</NuspecProperties>

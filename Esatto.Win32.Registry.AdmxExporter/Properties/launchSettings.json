@@ -2,7 +2,7 @@
   "profiles": {
     "Esatto.Win32.AdmxExporter": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\dev\\source\\repos\\Esatto.Win32\\Esatto.Win32.Registry.SampleApp\\bin\\Debug\\net7.0\\Esatto.Win32.Registry.SampleApp.dll\" \"C:\\dev\\source\\repos\\Esatto.Win32\\Esatto.Win32.Registry.SampleApp\\bin\\Debug\\net7.0\\PolicyDefinitions\\Esatto.Win32.Registry.SampleApp\"",
+      "commandLineArgs": "\"C:\\dev\\source\\repos\\Esatto.Win32\\Esatto.Win32.Registry.SampleApp\\bin\\Debug\\net8.0\\Esatto.Win32.Registry.SampleApp.dll\" \"C:\\dev\\source\\repos\\Esatto.Win32\\Esatto.Win32.Registry.SampleApp\\bin\\Debug\\net7.0\\PolicyDefinitions\\Esatto.Win32.Registry.SampleApp\"",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
