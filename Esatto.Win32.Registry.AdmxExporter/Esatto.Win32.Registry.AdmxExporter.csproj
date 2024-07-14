@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net7.0;net462</TargetFrameworks>
+    <TargetFrameworks>net8.0;net462</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <Title>Esatto Win32 Registry</Title>
     <Description>Wrappers allowing easy reading and writing to the registry class wrappers or Microsoft.Extensions.Configuration</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.6</Version>
+    <VersionPrefix>3.0.17</VersionPrefix>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <PropertyGroup>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <IncludeSymbols>false</IncludeSymbols>
     <NuspecFile>Esatto.Win32.Registry.AdmxExporter.nuspec</NuspecFile>
     <IntermediatePackDir>$(MSBuildProjectDirectory)/bin/$(Configuration)/publish/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
@@ -33,9 +34,8 @@
     <Compile Include="..\Esatto.Win32.Registry\RegistrySettingsAttribute.cs" Link="Borrows\RegistrySettingsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.11.4" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0"
-                      Condition="'$(TargetFramework)' != 'net462'" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.5" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" Condition="'$(TargetFramework)' != 'net462'" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\adml.xslt" />

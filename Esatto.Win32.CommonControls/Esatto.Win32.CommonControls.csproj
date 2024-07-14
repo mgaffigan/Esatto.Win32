@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <RootNamespace>Esatto.Win32</RootNamespace>
-    <TargetFrameworks>net462;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net8.0-windows</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>$(DefineConstants);ESATTO_WIN32</DefineConstants>
     <LangVersion>latest</LangVersion>
@@ -11,14 +11,14 @@
     <Title>Esatto Win32 Common Controls</Title>
     <Description>Tools for manipulating HWNDs, watching other windows, and utilizing shell registrations</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.17</Version>
+    <VersionPrefix>3.0.17</VersionPrefix>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>
     <Compile Include="..\Esatto.Win32.Common\Printing\NativeMethods.cs" Link="Printing\NativeMethods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
+    <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Esatto.Win32.Com\Esatto.Win32.Com.csproj" />

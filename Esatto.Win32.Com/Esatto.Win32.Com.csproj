@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>Esatto.Win32</RootNamespace>
-    <TargetFrameworks>net462;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net8.0-windows</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>$(DefineConstants);ESATTO_WIN32</DefineConstants>
     <Title>Esatto Win32 COM</Title>
     <Description>Wrappers allowing easy creation of Out-of-process COM servers</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.9</Version>
+    <VersionPrefix>3.0.17</VersionPrefix>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>

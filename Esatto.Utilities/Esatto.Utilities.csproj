@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;netstandard2.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net462;netstandard2.0;net8.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Nullable Condition="'$(TargetFramework)' != 'net462' and '$(TargetFramework)' != 'netstandard2.0'">enable</Nullable>
     <Nullable Condition="'$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'netstandard2.0'">annotations</Nullable>
@@ -11,7 +11,7 @@
     <Description>Miscellaneous utility classes</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
     <WarningsAsErrors>Nullable;CA1806;CA1307;CA1309;CA1310</WarningsAsErrors>
-    <Version>3.0.14</Version>
+    <VersionPrefix>3.0.17</VersionPrefix>
   </PropertyGroup>
   <ItemGroup>
     <!-- Not supported on net48 -->
@@ -24,9 +24,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
-    <PackageReference Include="System.Text.Json" Version="7.0.3" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
 </Project>

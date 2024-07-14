@@ -6,7 +6,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <Title>Esatto Win32 NetInjector</Title>
-    <Version>3.0.16</Version>
+    <VersionPrefix>3.0.16</VersionPrefix>
     <Description>Injects a .NET DLL into a remote process</Description>
     <PackageTags>Hook;inject;netfx</PackageTags>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
