@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -14,7 +16,7 @@ namespace Esatto.Win32.Windows
 {
     public class ShellPreviewControl : Control
     {
-        private TypedPreviewerHandle DisplayedPreviewer;
+        private TypedPreviewerHandle? DisplayedPreviewer;
 
         public ShellPreviewControl()
         {
@@ -37,11 +39,11 @@ namespace Esatto.Win32.Windows
             this.DisplayedPreviewer?.OnResize(ClientRectangle);
         }
 
-        public Exception LastLoadException { get; private set; }
+        public Exception? LastLoadException { get; private set; }
 
-        public event EventHandler DisplayedPathChanged;
-        private string _DisplayedPath;
-        public string DisplayedPath
+        public event EventHandler? DisplayedPathChanged;
+        private string? _DisplayedPath;
+        public string? DisplayedPath
         {
             get { return _DisplayedPath; }
             set
@@ -139,7 +141,7 @@ namespace Esatto.Win32.Windows
         public readonly Guid CLSID;
 
         private IPreviewHandler Handler;
-        private Stream OpenStream;
+        private Stream? OpenStream;
 
         public TypedPreviewerHandle(ShellPreviewControl target, Guid clsid)
         {
@@ -166,7 +168,7 @@ namespace Esatto.Win32.Windows
             finally
             {
                 var temp = Handler;
-                Handler = null;
+                Handler = null!;
                 Marshal.FinalReleaseComObject(temp);
 
                 OpenStream?.Dispose();

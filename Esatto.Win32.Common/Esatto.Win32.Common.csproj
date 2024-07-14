@@ -7,7 +7,7 @@
     <Title>Esatto Win32 Common</Title>
     <Description>Tools for manipulating processes, services, printers, etc...</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <Version>3.0.6</Version>
+    <Version>3.0.17</Version>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>
