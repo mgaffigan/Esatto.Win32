@@ -297,10 +297,12 @@ namespace Esatto.Utilities
                     || destinationType == typeof(InstanceDescriptor);
             }
 
+            private static readonly char[] SpaceComma = [' ', ','];
+
             public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object? value)
             {
                 var sValue = (string)(value ?? throw new ArgumentNullException(nameof(value)));
-                var sValues = sValue.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var sValues = sValue.Split(SpaceComma, StringSplitOptions.RemoveEmptyEntries);
 
                 if (sValues.Length > 2)
                 {

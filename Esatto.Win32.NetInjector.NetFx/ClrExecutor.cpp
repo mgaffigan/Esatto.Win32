@@ -144,6 +144,8 @@ struct hostfxr {
 		RETURN_HR_IF_MSG(E_UNEXPECTED, lastSlash == std::wstring::npos, "Could not retrieve path to Esatto.Win32.NetInjector.NetFx.dll");
 		path.resize(lastSlash + 1);
 		path += L"nethost.dll";
+
+		return S_OK;
 	}
 
 	HRESULT Initialize() {

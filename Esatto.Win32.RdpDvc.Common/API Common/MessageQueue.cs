@@ -49,7 +49,7 @@ namespace Esatto.Win32.RdpDvc.ClientPluginApi
             TaskCompletionSource<byte[]> tcs;
             lock (syncReceive)
             {
-                if (QueuedMessages.Any())
+                if (QueuedMessages.Count > 0)
                 {
                     var result = QueuedMessages[0];
                     QueuedMessages.RemoveAt(0);
@@ -83,7 +83,7 @@ namespace Esatto.Win32.RdpDvc.ClientPluginApi
             TaskCompletionSource<byte[]>? tcs = null;
             lock (syncReceive)
             {
-                if (ReceiveThunks.Any())
+                if (ReceiveThunks.Count > 0)
                 {
                     tcs = ReceiveThunks[0];
                     ReceiveThunks.RemoveAt(0);

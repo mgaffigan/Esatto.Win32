@@ -38,11 +38,13 @@ namespace Esatto.Utilities
             return result;
         }
 
+        private static readonly char[] CommaSemicolon = [',', ';'];
+
         private static void ParseInternal(string s, CoalescingRangeCollection result)
         {
             // RangeList = comma separated elements
             // Element = ACTION ELEMENT | ACTION START - END
-            var parts = s.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = s.Split(CommaSemicolon, StringSplitOptions.RemoveEmptyEntries);
             foreach (var part in parts)
             {
                 var rest = part.Trim();

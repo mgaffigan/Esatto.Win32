@@ -267,10 +267,12 @@ namespace Esatto.Utilities
                     || destinationType == typeof(InstanceDescriptor);
             }
 
+            private static readonly char[] Delimiters = [' ', ','];
+
             public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object? value)
             {
                 var sValue = value as string ?? throw new ArgumentOutOfRangeException(nameof(value));
-                var sValues = sValue.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var sValues = sValue.Split(Delimiters, StringSplitOptions.RemoveEmptyEntries);
 
                 if (sValues.Length > 2)
                 {

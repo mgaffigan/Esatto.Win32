@@ -24,7 +24,7 @@ namespace Esatto.Utilities
                 throw new ArgumentException($"Invalid default port '{defaultport}'");
             }
 
-            string[] values = endpointstring.Split(new char[] { ':' });
+            string[] values = endpointstring.Split(':');
             IPAddress? ipaddy;
             int port = -1;
 

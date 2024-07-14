@@ -68,10 +68,12 @@ namespace Esatto.Utilities
             return sbResult.ToString();
         }
 
+        private static readonly char[] SpaceOrComma = [' ', ','];
+
         // https://stackoverflow.com/a/63760729/138200
         public static string GetInitials(this string value)
            => string.Concat(value
-              .Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
+              .Split(SpaceOrComma, StringSplitOptions.RemoveEmptyEntries)
               .Where(x => x.Length >= 1 && char.IsLetter(x[0]))
               .Select(x => char.ToUpper(x[0], CultureInfo.CurrentCulture)));
 
@@ -454,6 +456,8 @@ namespace System
             => s.IndexOf(value, comparison) >= 0;
         public static bool Contains(this string s, char value, StringComparison comparison)
             => s.IndexOf(value, comparison) >= 0;
+        public static bool StartsWith(this string s, char value, StringComparison comparison)
+            => s.StartsWith(value.ToString(), comparison);
         public static int IndexOf(this string s, char c, StringComparison comparison)
             => s.IndexOf(c);
         public static void Append(this StringBuilder sb, IFormatProvider? provider, FormattableString message)

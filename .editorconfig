@@ -2,3 +2,15 @@
 
 # CA1848: Use the LoggerMessage delegates
 dotnet_diagnostic.CA1848.severity = suggestion
+
+# CA1512: Use ArgumentOutOfRangeException throw helper
+dotnet_diagnostic.CA1512.severity = suggestion
+
+# CA1510: Use ArgumentNullException throw helper
+dotnet_diagnostic.CA1510.severity = suggestion
+
+# CA1513: Use Disposed.ThrowIf
+dotnet_diagnostic.CA1513.severity = suggestion
+
+# CA1865: Use char overload of StartsWith or IndexOf
+dotnet_diagnostic.CA1865.severity = suggestion
