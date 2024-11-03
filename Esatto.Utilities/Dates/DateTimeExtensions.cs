@@ -2,6 +2,11 @@
 {
     public static class DateTimeExtensions
     {
+        public static DateTime AsUtcDateOnly(this DateTime dt)
+        {
+            return new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0, DateTimeKind.Utc);
+        }
+
         public static DateTime EarlierOf(this DateTime a, DateTime b)
         {
             if (!(a.Kind == b.Kind))

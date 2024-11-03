@@ -8,7 +8,7 @@
     <Title>Esatto Win32 Registry</Title>
     <Description>Wrappers allowing easy reading and writing to the registry class wrappers or Microsoft.Extensions.Configuration</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <VersionPrefix>3.0.17</VersionPrefix>
+    <VersionPrefix>3.0.20</VersionPrefix>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <PropertyGroup>
@@ -34,7 +34,7 @@
     <Compile Include="..\Esatto.Win32.Registry\RegistrySettingsAttribute.cs" Link="Borrows\RegistrySettingsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.11.5" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.6" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" Condition="'$(TargetFramework)' != 'net462'" />
   </ItemGroup>
   <ItemGroup>

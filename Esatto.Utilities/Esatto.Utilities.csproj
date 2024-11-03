@@ -11,7 +11,7 @@
     <Description>Miscellaneous utility classes</Description>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
     <WarningsAsErrors>Nullable;CA1806;CA1307;CA1309;CA1310</WarningsAsErrors>
-    <VersionPrefix>3.0.18</VersionPrefix>
+    <VersionPrefix>3.0.20</VersionPrefix>
   </PropertyGroup>
   <ItemGroup>
     <!-- Not supported on net48 -->
@@ -25,8 +25,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
-    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
 </Project>
