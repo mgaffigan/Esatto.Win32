@@ -141,7 +141,8 @@ namespace Esatto.Win32.Windows
 
         private void OnWindowMoved()
         {
-            var relativeRect = RelativeToWindow.GetBounds();
+            var relativeRect = new Rect();
+            if (RelativeToWindow.Handle != IntPtr.Zero) relativeRect = RelativeToWindow.GetBounds();
             var myRect = Window.GetBounds();
             myRect.X -= relativeRect.X;
             myRect.Y -= relativeRect.Y;

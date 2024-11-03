@@ -18,19 +18,19 @@ namespace Esatto.Win32.Windows
         private readonly Thread thCreated;
         private List<IObserver<WinEventEventArgs>> Observers;
 
-        private readonly Process Process;
+        private readonly Process? Process;
         private readonly int? ThreadID;
         private readonly WinEvent MinEvent;
         private readonly WinEvent MaxEvent;
         private readonly SynchronizationContext SyncCtx;
         private readonly Action<Action> CallbackContext;
 
-        public WinEventHook(Process process, int? threadId, WinEvent minEvent, WinEvent maxEvent, HookOptions options)
+        public WinEventHook(Process? process, int? threadId, WinEvent minEvent, WinEvent maxEvent, HookOptions options)
             : this(process, threadId, minEvent, maxEvent, options, null)
         {
         }
 
-        public WinEventHook(Process process, int? threadId, WinEvent minEvent, WinEvent maxEvent, HookOptions options = HookOptions.None, SynchronizationContext syncCtx = null)
+        public WinEventHook(Process? process, int? threadId, WinEvent minEvent, WinEvent maxEvent, HookOptions options = HookOptions.None, SynchronizationContext syncCtx = null)
         {
             if (!(syncCtx != null || !options.HasFlag(HookOptions.AsyncCallbacks)))
             {
