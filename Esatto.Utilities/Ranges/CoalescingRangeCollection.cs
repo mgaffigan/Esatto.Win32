@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace Esatto.Utilities
 {
-    public class CoalescingRangeCollection : IObservableCollection<Range>, IXmlSerializable, INotifyPropertyChanged
+    public class CoalescingRangeCollection : IObservableCollection<Range>, IXmlSerializable, INotifyPropertyChanged, ICollection<int>
     {
         private readonly ObservableCollectionImpl<Range> _Allocations;
 
@@ -19,6 +19,9 @@ namespace Esatto.Utilities
 
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        bool ICollection<int>.IsReadOnly => false;
+        IEnumerator<int> IEnumerable<int>.GetEnumerator() => _Allocations.SelectMany(r => r.AsEnumerable()).GetEnumerator();
 
         public CoalescingRangeCollection()
         {
@@ -101,6 +104,8 @@ namespace Esatto.Utilities
             return sb.ToString();
         }
 
+        public void Add(int item) => AddRange(new Range(item, 1));
+
         public void AddRange(Range newRange)
         {
             if (newRange == null)
@@ -141,6 +146,13 @@ namespace Esatto.Utilities
             }
         }
 
+        public bool Remove(int item)
+        {
+            var containsItem = Contains(item);
+            ClearRange(new Range(item, 1));
+            return containsItem;
+        }
+
         public void ClearRange(Range clearedRange)
         {
             if (clearedRange == null)
@@ -179,7 +191,7 @@ namespace Esatto.Utilities
         }
 
         public bool Contains(Range range) => _Allocations.Any(a => range.IsEnclosedBy(a));
-        public bool Contains(int index) => _Allocations.Any(a => a.Contains(index));
+        public bool Contains(int item) => _Allocations.Any(a => a.Contains(item));
 
         public void Clear()
         {
@@ -194,6 +206,14 @@ namespace Esatto.Utilities
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _Allocations.GetEnumerator();
+        }
+
+        void ICollection<int>.CopyTo(int[] array, int arrayIndex)
+        {
+            foreach (var item in (ICollection<int>)this)
+            {
+                array[arrayIndex++] = item;
+            }
         }
     }
 }
