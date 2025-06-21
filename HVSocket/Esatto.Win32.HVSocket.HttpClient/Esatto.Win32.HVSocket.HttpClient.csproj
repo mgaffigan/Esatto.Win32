@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>all</WarningsAsErrors>
+    <RootNamespace>Esatto.Win32.HVSocket</RootNamespace>
+    <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
+    <VersionPrefix>3.0.21</VersionPrefix>
+  </PropertyGroup>
+  <Import Project="..\..\assets\EsattoCSCommon.targets" />
+
+  <ItemGroup>
+    <Compile Include="..\Esatto.Win32.HVSocket.KestrelListener\Win32\HyperVSocketEndPoint.cs" Link="Win32\HyperVSocketEndPoint.cs" />
+    <Compile Include="..\Esatto.Win32.HVSocket.KestrelListener\Win32\NativeMethods.cs" Link="Win32\NativeMethods.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="Readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
