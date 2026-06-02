@@ -40,6 +40,14 @@ namespace Esatto.Win32.RdpDvc.ClientPluginApi
             }
         }
 
+        private void ThrowIfDisconnected()
+        {
+            if (isDisconnected)
+            {
+                throw new DvcChannelDisconnectedException();
+            }
+        }
+
         public void Dispose()
         {
             AssertAlive();
@@ -62,24 +70,36 @@ namespace Esatto.Win32.RdpDvc.ClientPluginApi
 
         public void SendMessage(byte[] data, int offset, int length)
         {
+            ThrowIfDisconnected();
             AssertAlive();
-            if (isDisconnected)
+
+            try
+            {
+                this._Proxy.WriteMessage(data, offset, length);
+            }
+            catch (ObjectDisposedException) when (isDisconnected)
             {
                 throw new DvcChannelDisconnectedException();
             }
-
-            this._Proxy.WriteMessage(data, offset, length);
         }
 
-        public Task<byte[]> ReadMessageAsync(CancellationToken ct)
+        public async Task<byte[]> ReadMessageAsync(CancellationToken ct)
         {
+            ThrowIfDisconnected();
             AssertAlive();
-            if (isDisconnected)
+
+            try
+            {
+                return await ReadQueue.ReadAsync(ct).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (!ct.IsCancellationRequested && isDisconnected)
             {
                 throw new DvcChannelDisconnectedException();
             }
-
-            return ReadQueue.ReadAsync(ct);
+            catch (ObjectDisposedException) when (isDisconnected)
+            {
+                throw new DvcChannelDisconnectedException();
+            }
         }
 
         private sealed class DelegateWtsVirtualChannelCallback : IWTSVirtualChannelCallback
