@@ -6,7 +6,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <Title>Esatto Win32 NetInjector</Title>
-    <VersionPrefix>3.0.20</VersionPrefix>
+    <VersionPrefix>3.0.22</VersionPrefix>
     <Description>Injects a .NET DLL into a remote process</Description>
     <PackageTags>Hook;inject;netfx</PackageTags>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
@@ -19,7 +19,10 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <MsbuildLoc>C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe</MsbuildLoc>
+    <MsbuildLoc2022>C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe</MsbuildLoc2022>
+    <MsbuildLoc18>C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe</MsbuildLoc18>
+    <MsbuildLoc Condition="'$(MsbuildLoc)' == '' and Exists('$(MsbuildLoc2022)')">$(MsbuildLoc2022)</MsbuildLoc>
+    <MsbuildLoc Condition="'$(MsbuildLoc)' == '' and Exists('$(MsbuildLoc18)')">$(MsbuildLoc18)</MsbuildLoc>
     <NetfxVcxproj>..\Esatto.Win32.NetInjector.NetFx\Esatto.Win32.NetInjector.NetFx.vcxproj</NetfxVcxproj>
   </PropertyGroup>
 
@@ -35,11 +38,11 @@
     <ItemGroup>
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\Win32\$(Configuration)\Esatto.Win32.NetInjector.NetFx.dll" Pack="true" PackagePath="\runtimes\win-x86\native\" />
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\Win32\$(Configuration)\Esatto.Win32.NetInjector.NetFx.pdb" Pack="true" PackagePath="\runtimes\win-x86\native\" />
-      <None Include="..\packages\runtime.win-x86.Microsoft.NETCore.DotNetAppHost.8.0.10\runtimes\win-x86\native\nethost.dll" Pack="true" PackagePath="\runtimes\win-x86\native\" />
+      <None Include="..\packages\runtime.win-x86.Microsoft.NETCore.DotNetAppHost.10.0.8\runtimes\win-x86\native\nethost.dll" Pack="true" PackagePath="\runtimes\win-x86\native\" />
 
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\x64\$(Configuration)\Esatto.Win32.NetInjector.NetFx.dll" Pack="true" PackagePath="\runtimes\win-x64\native\" />
       <None Include="..\Esatto.Win32.NetInjector.NetFx\bin\x64\$(Configuration)\Esatto.Win32.NetInjector.NetFx.pdb" Pack="true" PackagePath="\runtimes\win-x64\native\" />
-      <None Include="..\packages\runtime.win-x64.Microsoft.NETCore.DotNetAppHost.8.0.10\runtimes\win-x64\native\nethost.dll" Pack="true" PackagePath="\runtimes\win-x64\native\" />
+      <None Include="..\packages\runtime.win-x64.Microsoft.NETCore.DotNetAppHost.10.0.8\runtimes\win-x64\native\nethost.dll" Pack="true" PackagePath="\runtimes\win-x64\native\" />
     </ItemGroup>
   </Target>
 </Project>

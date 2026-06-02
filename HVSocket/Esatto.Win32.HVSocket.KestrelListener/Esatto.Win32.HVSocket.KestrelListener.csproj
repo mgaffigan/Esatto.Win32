@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>all</WarningsAsErrors>
     <RootNamespace>Esatto.Win32.HVSocket</RootNamespace>
     <PackageReadmeFile>.\Readme.md</PackageReadmeFile>
-    <VersionPrefix>3.0.21</VersionPrefix>
+    <VersionPrefix>3.0.22</VersionPrefix>
   </PropertyGroup>
   <Import Project="..\..\assets\EsattoCSCommon.targets" />
 

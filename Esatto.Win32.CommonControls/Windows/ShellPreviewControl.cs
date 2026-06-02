@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using static Esatto.Win32.Windows.NativeMethods;
 using Esatto.Win32.Com;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace Esatto.Win32.Windows
 {
@@ -43,6 +44,7 @@ namespace Esatto.Win32.Windows
 
         public event EventHandler? DisplayedPathChanged;
         private string? _DisplayedPath;
+        [DefaultValue(null)]
         public string? DisplayedPath
         {
             get { return _DisplayedPath; }

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net8.0-windows;net10.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Nullable Condition="'$(TargetFramework)' != 'net462'">enable</Nullable>
     <Nullable Condition="'$(TargetFramework)' == 'net462'">annotations</Nullable>
@@ -14,7 +14,7 @@
     <WarningsAsErrors>Nullable;CA1806;CA1307;CA1309;CA1310</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseWindowsForms>true</UseWindowsForms>
-    <VersionPrefix>3.0.20</VersionPrefix>
+    <VersionPrefix>3.0.22</VersionPrefix>
   </PropertyGroup>
   <ItemGroup>
     <!-- Not supported on net462 -->
@@ -26,10 +26,14 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net10.0-windows'">
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows'">
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
+    <PackageReference Include="System.Text.Json" Version="10.0.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Esatto.Win32.Com\Esatto.Win32.Com.csproj" />
