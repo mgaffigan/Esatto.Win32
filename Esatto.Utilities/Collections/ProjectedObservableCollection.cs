@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Esatto.Utilities
 {
@@ -14,41 +8,86 @@ namespace Esatto.Utilities
         where T : notnull
     {
         private readonly Func<IReadOnlyList<T>> Projection;
-        private readonly ObservableCollectionImpl<T> Collection;
+        private readonly ObservableCollectionImpl<T>? Collection;
+        private IReadOnlyList<T> List;
 
+        [Obsolete("Specify ProjectionChangedMode")]
         public ProjectedObservableCollection(Func<IReadOnlyList<T>> proj)
+            : this(proj, ProjectionChangedMode.Reset)
         {
-            this.Projection = proj ?? throw new ArgumentNullException(nameof(proj));
-            this.Collection = new ObservableCollectionImpl<T>();
-            this.Collection.CollectionChanged += (_, e) => CollectionChanged?.Invoke(this, e);
-            ((INotifyPropertyChanged)this.Collection).PropertyChanged += (_, e) => PropertyChanged?.Invoke(this, e);
+            // nop
         }
 
-        public void Invalidate() => Collection.MakeEqualTo(Projection());
+        public ProjectedObservableCollection(Func<IReadOnlyList<T>> proj, ProjectionChangedMode mode)
+        {
+            this.Projection = proj ?? throw new ArgumentNullException(nameof(proj));
+
+            if (mode == ProjectionChangedMode.Incremental)
+            {
+                this.List = this.Collection = new ObservableCollectionImpl<T>();
+                this.Collection.CollectionChanged += (_, e) => CollectionChanged?.Invoke(this, e);
+                ((INotifyPropertyChanged)this.Collection).PropertyChanged += (_, e) => PropertyChanged?.Invoke(this, e);
+            }
+            else
+            {
+                this.List = proj();
+            }
+        }
+
+        public void Invalidate()
+        {
+            if (Collection is not null)
+            {
+                Collection.MakeEqualTo(Projection());
+            }
+            else
+            {
+                var newList = Projection();
+                if (List.SequenceEqual(newList)) return;
+                List = newList;
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+            }
+        }
 
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
         #region IObservableCollection<T>
 
-        public T this[int index] => Collection[index];
-        public int Count => Collection.Count;
-        public IEnumerator<T> GetEnumerator() => Collection.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => Collection.GetEnumerator();
+        public T this[int index] => List[index];
+        public int Count => List.Count;
+        public IEnumerator<T> GetEnumerator() => List.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => List.GetEnumerator();
 
         #endregion
     }
 
-    public sealed class ProjectedObservableCollection<TSource, TResult> : ProjectedObservableCollection<TResult>, IDisposableObservableCollection<TResult>
+    public enum ProjectionChangedMode
+    {
+        Reset,
+        Incremental,
+    }
+
+    public sealed class ProjectedObservableCollection<TSource, TResult> 
+        : ProjectedObservableCollection<TResult>, IDisposableObservableCollection<TResult>
         where TResult : notnull
     {
         private HashSet<INotifyCollectionChanged> attached = new();
         private readonly IObservableCollection<TSource> Source;
         private readonly Func<TSource, IObservableCollection<TResult>> Selector;
 
+        [Obsolete("Specify ProjectionChangedMode")]
         public ProjectedObservableCollection(IObservableCollection<TSource> source,
             Func<TSource, IObservableCollection<TResult>> selector)
-            : base(() => source.SelectMany(s => selector(s)).ToList())
+            : this(source, selector, ProjectionChangedMode.Reset)
+        {
+            // nop
+        }
+
+        public ProjectedObservableCollection(IObservableCollection<TSource> source,
+            Func<TSource, IObservableCollection<TResult>> selector, ProjectionChangedMode mode)
+            : base(() => source.SelectMany(s => selector(s)).ToList(), mode)
         {
             this.Source = source;
             this.Selector = selector;
@@ -131,17 +170,13 @@ namespace Esatto.Utilities
         public static ProjectedObservableCollection<T> AsInvalidatingObservable<T>(this Func<IReadOnlyList<T>> func)
             where T : notnull
         {
-            var result = new ProjectedObservableCollection<T>(func);
-            result.Invalidate();
-            return result;
+            return new ProjectedObservableCollection<T>(func, ProjectionChangedMode.Reset);
         }
 
         public static ProjectedObservableCollection<T> AsInvalidatingObservable<T>(this IEnumerable<T> source)
             where T : notnull
         {
-            var result = new ProjectedObservableCollection<T>(() => source.ToList());
-            result.Invalidate();
-            return result;
+            return new ProjectedObservableCollection<T>(() => source.ToList(), ProjectionChangedMode.Reset);
         }
 
         public static IDisposableObservableCollection<TResult> SelectManyObservable<TSource, TResult>(this IObservableCollection<TSource> source,
@@ -149,9 +184,7 @@ namespace Esatto.Utilities
             where TResult : notnull
             where TSource : notnull
         {
-            var result = new ProjectedObservableCollection<TSource, TResult>(source, selector);
-            result.Invalidate();
-            return result;
+            return new ProjectedObservableCollection<TSource, TResult>(source, selector, ProjectionChangedMode.Reset);
         }
     }
 }
