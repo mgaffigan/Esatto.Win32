@@ -20,6 +20,7 @@ namespace Esatto.Utilities
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        int ICollection<int>.Count => _Allocations.Sum(r => r.Length);
         bool ICollection<int>.IsReadOnly => false;
         IEnumerator<int> IEnumerable<int>.GetEnumerator() => _Allocations.SelectMany(r => r.AsEnumerable()).GetEnumerator();
 
@@ -55,7 +56,7 @@ namespace Esatto.Utilities
                 bool invert = rest.StartsWith("^", StringComparison.Ordinal);
                 if (invert) rest = rest.Substring(1).TrimStart();
 
-                var iDash = part.IndexOf("-", StringComparison.Ordinal);
+                var iDash = rest.IndexOf("-", StringComparison.Ordinal);
                 Range elem;
                 if (iDash == 0)
                 {
@@ -63,13 +64,13 @@ namespace Esatto.Utilities
                 }
                 else if (iDash < 0)
                 {
-                    elem = new Range(int.Parse(part, CultureInfo.InvariantCulture), 1);
+                    elem = new Range(int.Parse(rest, CultureInfo.InvariantCulture), 1);
                 }
                 else
                 {
 #pragma warning disable CA1846 // Prefer 'AsSpan' over 'Substring' - not supported in net48
-                    var left = int.Parse(part.Substring(0, iDash), CultureInfo.InvariantCulture);
-                    var right = int.Parse(part.Substring(iDash + 1), CultureInfo.InvariantCulture);
+                    var left = int.Parse(rest.Substring(0, iDash), CultureInfo.InvariantCulture);
+                    var right = int.Parse(rest.Substring(iDash + 1), CultureInfo.InvariantCulture);
 #pragma warning restore CA1846 // Prefer 'AsSpan' over 'Substring'
                     elem = new Range(left, right - left + 1);
                 }

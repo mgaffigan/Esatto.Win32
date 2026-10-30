@@ -235,6 +235,10 @@ namespace Esatto.Utilities
             {
                 throw new ArgumentNullException(nameof(other));
             }
+            if (!(other.Kind == this.Kind))
+            {
+                throw new ArgumentException("Contract assertion not met: other.Kind == this.Kind", nameof(other));
+            }
 
             var left = Math.Min(other.Start.Ticks, this.Start.Ticks);
             var right = Math.Max(other.End.Ticks, this.End.Ticks);
@@ -248,9 +252,9 @@ namespace Esatto.Utilities
 
         public DateTimeRange Inflate(TimeSpan padLeft = default(TimeSpan), TimeSpan padRight = default(TimeSpan))
         {
-            if (!(padLeft + padRight + Length > TimeSpan.Zero))
+            if (!(padLeft + padRight + Length >= TimeSpan.Zero))
             {
-                throw new ArgumentException("Contract assertion not met: padLeft + padRight + Length > TimeSpan.Zero", nameof(padLeft));
+                throw new ArgumentException("Contract assertion not met: padLeft + padRight + Length >= TimeSpan.Zero", nameof(padLeft));
             }
 
             return new DateTimeRange(Start - padLeft, End + padRight);
@@ -297,42 +301,64 @@ namespace Esatto.Utilities
                     || destinationType == typeof(InstanceDescriptor);
             }
 
-            private static readonly char[] SpaceComma = [' ', ','];
+            internal const string Separator = "..";
+
+            // Split on the last separator since dates may end with '.' (hu-HU "2024. 01. 01.") but never start with one.
+            // Returns null if there is more than one separator.
+            internal static string[]? SplitRange(string value)
+            {
+                var iSeparator = value.LastIndexOf(Separator, StringComparison.Ordinal);
+                if (iSeparator < 0)
+                {
+                    return [value];
+                }
+
+                var start = value.Substring(0, iSeparator);
+#if NET
+                if (start.Contains(Separator, StringComparison.Ordinal))
+#else
+                if (start.IndexOf(Separator, StringComparison.Ordinal) >= 0)
+#endif
+                {
+                    return null;
+                }
+                return [start, value.Substring(iSeparator + Separator.Length)];
+            }
 
             public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object? value)
             {
                 var sValue = (string)(value ?? throw new ArgumentNullException(nameof(value)));
-                var sValues = sValue.Split(SpaceComma, StringSplitOptions.RemoveEmptyEntries);
+                var sValues = SplitRange(sValue);
 
-                if (sValues.Length > 2)
+                if (sValues is null)
                 {
-                    throw new FormatException($"'{value}' constitutes an invalid range.  Must be in format '{{start index}}[, {{length}}]' ('1' or '1,3').");
+                    throw new FormatException($"'{value}' constitutes an invalid range.  Must be in format '{{start}}[..{{end}}]' ('2024-01-01' or '2024-01-01..2024-01-05').");
                 }
+
+                DateTime start, end;
                 try
                 {
-                    DateTime start = DateTime.Parse(sValues[0], culture);
-                    DateTime end = start.AddDays(1);
-                    if (sValues.Length == 1)
-                    {
-                        // no-op, use assumed length of 1
-                    }
-                    if (sValues.Length == 2)
-                    {
-                        end = DateTime.Parse(sValues[0], culture);
-                    }
-                    else throw new FormatException();
-
-                    if (end < start)
-                    {
-                        throw new FormatException();
-                    }
-
-                    return new DateTimeRange(start, end);
+                    start = DateTime.Parse(sValues[0].Trim(), culture, DateTimeStyles.RoundtripKind);
+                    // single value is assumed to be one day
+                    end = sValues.Length == 2
+                        ? DateTime.Parse(sValues[1].Trim(), culture, DateTimeStyles.RoundtripKind)
+                        : start.AddDays(1);
                 }
                 catch (FormatException ex)
                 {
-                    throw new FormatException($"Could not parse start offset or length of range '{value}'.  Start and length must be non-negative integers.  Length must be greater than 0.", ex);
+                    throw new FormatException($"Could not parse start or end of range '{value}'.", ex);
                 }
+
+                if (start.Kind != end.Kind)
+                {
+                    throw new FormatException($"Start and end of range '{value}' must have the same DateTimeKind.");
+                }
+                if (end < start)
+                {
+                    throw new FormatException($"End of range '{value}' must not be before start.");
+                }
+
+                return new DateTimeRange(start, end);
             }
 
             public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type? destinationType)
@@ -343,20 +369,15 @@ namespace Esatto.Utilities
                 }
                 if (destinationType == null)
                 {
-                    throw new ArgumentNullException(nameof(value));
+                    throw new ArgumentNullException(nameof(destinationType));
                 }
 
                 var range = (DateTimeRange)value;
 
                 if (destinationType == typeof(string))
                 {
-                    // for inheriting types, use ToString
-                    if (value.GetType() != typeof(DateTimeRange))
-                    {
-                        return range.ToString();
-                    }
-
-                    return string.Format(culture, "{0}, {1}", range.Start, range.Length);
+                    // ISO 8601 round-trip format is culture-invariant and preserves Kind
+                    return string.Format(CultureInfo.InvariantCulture, "{0:o}..{1:o}", range.Start, range.End);
                 }
                 else if (destinationType == typeof(InstanceDescriptor))
                 {
@@ -383,21 +404,24 @@ namespace Esatto.Utilities
             {
                 throw new ArgumentNullException(nameof(timesOfDay), "Contract assertion not met: timesOfDay != null");
             }
-            if (!(timesOfDay.All(t => selector(t) < TimeSpan.FromHours(24))))
+            if (!(timesOfDay.All(t => selector(t) >= TimeSpan.Zero && selector(t) < TimeSpan.FromHours(24))))
             {
-                throw new ArgumentException("Contract assertion not met: timesOfDay.All(t => selector(t) < TimeSpan.FromHours(24))", nameof(timesOfDay));
+                throw new ArgumentException("Contract assertion not met: timesOfDay.All(t => selector(t) >= TimeSpan.Zero && selector(t) < TimeSpan.FromHours(24))", nameof(timesOfDay));
             }
 
-            var startDate = Start.Date;
-            var endDate = End;
+            // sorted so results are chronological and we can stop at the first time past End
+            var sortedTimes = timesOfDay.OrderBy(selector).ToArray();
 
-            for (var cDate = startDate; cDate < endDate; cDate = cDate.AddDays(1))
+            for (var cDate = Start.Date; cDate < End; cDate = cDate.AddDays(1))
             {
-                for (int i = 0; i < timesOfDay.Length; i++)
+                foreach (var source in sortedTimes)
                 {
-                    var source = timesOfDay[0];
                     var newDate = cDate.Add(selector(source));
-                    if (newDate >= endDate)
+                    if (newDate < Start)
+                    {
+                        continue;
+                    }
+                    if (newDate >= End)
                     {
                         break;
                     }

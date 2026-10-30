@@ -62,8 +62,8 @@ namespace Esatto.Utilities
             return boundedRange.Intersect(this);
         }
 
-        public new DateRange With(int? startDelta = null, int? newLength = null) => (DateRange)base.With(startDelta, newLength);
-        public bool Contains(DateTime date) => base.Contains(new DateRange(date, 1).Start);
+        public new DateRange With(int? startDelta = null, int? newLength = null) => (DateRange)base.With(Start + (startDelta ?? 0), newLength);
+        public bool Contains(DateTime date) => base.Contains((int)(date.Date - Epoch).TotalDays);
 
         public DateRange? Subtract(DateRange other, out DateRange? newRange)
         {

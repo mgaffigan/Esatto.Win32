@@ -20,7 +20,8 @@ namespace Esatto.Utilities
         public static IEnumerable<int> GetRange(string numbers)
         {
             var items = numbers.Split(',');
-            var rangeRegex = new Regex(@"(-?\d+)-(-?\d+)");
+            // anchored, and tolerates the " - " written by GetRange(IEnumerable<int>)
+            var rangeRegex = new Regex(@"^\s*(-?\d+)\s*-\s*(-?\d+)\s*$");
             foreach (var item in items)
             {
                 if (!string.IsNullOrWhiteSpace(item))
@@ -31,9 +32,10 @@ namespace Esatto.Utilities
                         yield return result;
                         continue;
                     }
-                    else if (rangeRegex.IsMatch(item))
+
+                    var m = rangeRegex.Match(item);
+                    if (m.Success)
                     {
-                        var m = rangeRegex.Match(item);
                         foreach (var n in GetRange(
                             int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture), 
                             int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture)))

@@ -282,15 +282,11 @@ namespace Esatto.Utilities
                 {
                     int start = int.Parse(sValues[0], culture);
                     int length = 1;
-                    if (sValues.Length == 1)
-                    {
-                        // no-op, use assumed length of 1
-                    }
+                    // single value is assumed to be length 1
                     if (sValues.Length == 2)
                     {
                         length = int.Parse(sValues[1], culture);
                     }
-                    else throw new FormatException();
 
                     if (start < 0 || length < 1)
                     {

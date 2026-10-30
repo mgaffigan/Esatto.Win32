@@ -70,6 +70,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esatto.Win32.HVSocket.DemoS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esatto.Win32.HVSocket.DemoClient", "HVSocket\Esatto.Win32.HVSocket.DemoClient\Esatto.Win32.HVSocket.DemoClient.csproj", "{22BD3A26-67C3-4764-A02B-F38209CDF841}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esatto.Utilities.Tests", "Esatto.Utilities.Tests\Esatto.Utilities.Tests.csproj", "{60E5111A-61FC-4840-8C5D-39CDF5FBB854}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -324,6 +326,18 @@ Global
 		{22BD3A26-67C3-4764-A02B-F38209CDF841}.Release|x64.Build.0 = Release|Any CPU
 		{22BD3A26-67C3-4764-A02B-F38209CDF841}.Release|x86.ActiveCfg = Release|Any CPU
 		{22BD3A26-67C3-4764-A02B-F38209CDF841}.Release|x86.Build.0 = Release|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Debug|x64.Build.0 = Debug|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Debug|x86.Build.0 = Debug|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Release|x64.ActiveCfg = Release|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Release|x64.Build.0 = Release|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Release|x86.ActiveCfg = Release|Any CPU
+		{60E5111A-61FC-4840-8C5D-39CDF5FBB854}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

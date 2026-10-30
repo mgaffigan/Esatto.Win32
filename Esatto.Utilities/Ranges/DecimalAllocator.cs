@@ -61,9 +61,10 @@
             {
                 throw new InvalidOperationException("Contract assertion not met: AllocatedAmount <= TotalAmount");
             }
-            if (!((AllocatedAmount == TotalAmount) == (AllocatedWeight == TotalWeight)))
+            // Rounding may reach TotalAmount before TotalWeight, but never the reverse
+            if (AllocatedWeight == TotalWeight && AllocatedAmount != TotalAmount)
             {
-                throw new InvalidOperationException("Contract assertion not met: (AllocatedAmount == TotalAmount) == (AllocatedWeight == TotalWeight)");
+                throw new InvalidOperationException("Contract assertion not met: AllocatedWeight == TotalWeight implies AllocatedAmount == TotalAmount");
             }
             return thisDelta;
         }
