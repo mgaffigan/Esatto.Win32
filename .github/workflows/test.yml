@@ -1,0 +1,36 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+
+    # Windows required for net462 tests and the C++ NetInjector.NetFx project
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    # Use nuget restore instead of dotnet to support packages.config in Esatto.Win32.NetInjector.NetFx
+    - name: Restore nuget
+      run: nuget restore Esatto.Win32.sln
+    - name: Build
+      run: dotnet build Esatto.Win32.sln -c Release
+    - name: Test
+      run: dotnet test Esatto.Win32.sln -c Release --no-build --logger trx --results-directory ${{github.workspace}}/TestResults
+    - name: Upload test results
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: ${{github.workspace}}/TestResults
